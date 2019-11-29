@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:  
+  name: frontend
+spec:
+  selector:    
+    app: joboonja-frontend
+  type: NodePort
+  ports:  
+  - name: joboonja-frontend
+    port: 80
+    nodePort: 30719
+    protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: joboonja-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: joboonja-frontend
+  template:
+    metadata:
+      labels:
+        app: joboonja-frontend
+    spec:
+      containers:
+      - name: joboonja-frontend
+        image: quay.io/gsoosk/joboonja_front:latest
+        imagePullPolicy: "Always"
+        resources:
+          requests:
+            memory: "60Mi"
+            cpu: "0.1"
+          limits:
+            cpu: "0.1"
+            memory: "60Mi"
+        ports:
+        - containerPort: 80
