@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Toast from './components/Toast';
 import Polls from './scenes/Polls';
 import Navbar from './components/Navbar';
+import './assets/fonts/generalStyles.css';
 
 
 const store = createStore(JalasApp, applyMiddleware(thunk));
@@ -19,9 +20,9 @@ function App() {
     <Router>
       <Provider store={store}>
         <MuiThemeProvider theme={theme}>
-          <div>
+          <Navbar />
+          <div className="main-page">
             <Toast />
-            <Navbar />
             <Route path="/polls" exact component={Polls} />
           </div>
         </MuiThemeProvider>

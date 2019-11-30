@@ -1,3 +1,18 @@
 .navbar-bartitle {
-  direction: rtl;
+  direction: ltr !important;
+  text-align: left;
+}
+
+.navbar-details-row {
+  padding: 10px;
+  direction: rtl !important;
+}
+
+.navbar-button {
+  margin: 5px !important;
+}
+
+.navbar-button-icon {
+  margin: 3px !important;
+  margin-left: 5px !important;
 }
