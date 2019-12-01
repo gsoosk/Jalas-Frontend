@@ -8,6 +8,9 @@ import Container from 'react-bootstrap/Container';
 import './styles.scss';
 import PollIcon from '@material-ui/icons/Poll';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import { Link } from 'react-router-dom';
+
+
 
 function Index() {
   return (
@@ -22,10 +25,12 @@ function Index() {
                 </h1>
               </Col>
               <Col md={10} className="navbar-bartitle">
-                <Fab variant="extended" color="secondary" className="navbar-button">
-                  <PollIcon className="navbar-button-icon" />
-                  نظرسنجی‌ها
-                </Fab>
+                <Link to="/polls">
+                  <Fab variant="extended" color="secondary" className="navbar-button">
+                    <PollIcon className="navbar-button-icon" />
+                    نظرسنجی‌ها
+                  </Fab>
+                </Link>
                 <Fab variant="extended" color="secondary" className="navbar-button">
                   <GroupWorkIcon className="navbar-button-icon" />
                   جلسات
