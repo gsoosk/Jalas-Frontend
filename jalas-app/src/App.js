@@ -24,7 +24,7 @@ function App() {
           <div className="main-page">
             <Toast />
             <Route path="/polls" exact component={Polls} />
-            <Route path="/createMeeting/:pollID/:pollName" component={CreateMeeting} />
+            <Route path="/createMeeting/:pollID" component={CreateMeeting} />
           </div>
         </MuiThemeProvider>
       </Provider>

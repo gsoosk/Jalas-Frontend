@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { Typography, Button, LinearProgress } from '@material-ui/core';
 import './styles.scss';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import Times from './scenes/Times';
 import Rooms from './scenes/Rooms';
 
@@ -35,15 +36,17 @@ const r = [
 class CreateMeeting extends React.Component {
   constructor(props) {
     super(props);
-    const pollName = props.match.params.pollName;
+    const pollID = props.match.params.pollID;
+    const poll = props.polls.find ? props.polls.find(o => o.id === parseInt(pollID)) : undefined;
     this.state = {
       flow: 'times',
-      // flow: 'rooms',
-      poll: {},
-      polls: p,
+      time: {},
+      times: p,
       rooms: {},
       room: {},
-      title: pollName,
+      title: poll ? poll.title : 'جلسه',
+      meeting: {},
+      poll,
     };
     this.selectTime = this.selectTime.bind(this);
     this.getRooms = this.getRooms.bind(this);
@@ -52,9 +55,9 @@ class CreateMeeting extends React.Component {
   }
 
   selectTime(index) {
-    const { polls } = this.state;
+    const { times } = this.state;
     this.setState({
-      poll: polls[index],
+      time: times[index],
       flow: 'loading',
     });
     this.getRooms();
@@ -76,38 +79,51 @@ class CreateMeeting extends React.Component {
 
   selectRoom(index) {
     const { rooms } = this.state;
+    const room = rooms[index];
     this.setState({
-      room: rooms[index],
+      room,
       flow: 'loading',
     });
-    this.createMeeting();
+    this.createMeeting(index);
   }
 
-  createMeeting() {
-    const { poll, room, title } = this.state;
+  createMeeting(roomIndex) {
+    const {
+      poll, rooms, title, time,
+    } = this.state;
+    const negIds = poll.negative.map(o => o.id);
+    const posIds = poll.positive.map(o => o.id);
+    const participantsId = negIds.concat(posIds);
 
     const meeting = {
-      title: title,
-      start_time: poll.start_time,
-      end_time: poll.end_time,
-      room_id: room.room_name,
-      // participation_id: ,
+      title,
+      start_time: time.start_time,
+      end_time: time.end_time,
+      room_id: rooms[roomIndex].room_name,
+      participants_id: participantsId,
     };
+
+    // req
+
+    setTimeout(() => { this.setState({ meeting, flow:'finish' }); }, 1000);
   }
 
   render() {
-    const { flow, polls, rooms } = this.state;
+    const {
+      flow, times, rooms, title,
+    } = this.state;
     return (
       <Container>
         <Card>
           <CardContent>
-            <Typography variant="h3" align="center" gutterBottom>
-              ایجاد یک جَلسه‌ی جدید
-              برای
-
-            </Typography>
+            {flow !== 'finish' ?
+              (<Typography variant="h3" align="center" gutterBottom>
+                ایجاد یک جَلسه‌ی جدید
+                برای
+                {` ${title} `}
+              </Typography>) : (<div />) }
             {flow === 'times'
-              ? (<Times polls={polls} click={this.selectTime} />)
+              ? (<Times polls={times} click={this.selectTime} />)
               : flow === 'loading' ? <LinearProgress color="secondary" />
                 : flow === 'rooms' ? <Rooms rooms={rooms} click={this.selectRoom} />
                   : (<div />)}
@@ -126,4 +142,8 @@ class CreateMeeting extends React.Component {
   }
 }
 
-export default CreateMeeting;
+const mapStateToProps = store => ({
+  polls: store.savePollReducer.polls,
+});
+
+export default connect(mapStateToProps, null)(CreateMeeting);

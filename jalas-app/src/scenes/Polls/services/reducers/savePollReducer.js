@@ -3,14 +3,12 @@ import { savePoll } from '../actions/savePollActions';
 
 const savePollReducer = handleActions(
   {
-    [savePoll]: (state, { payload: { poll } }) => {
-      return ({
-        ...state, poll,
-      });
-    },
+    [savePoll]: (state, { payload: poll }) => ({
+      ...state, polls: poll,
+    }),
   },
   {
-    poll: {},
+    polls: {},
   },
 );
 export default savePollReducer;
