@@ -8,6 +8,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import Times from './scenes/Times';
 import Rooms from './scenes/Rooms';
+import Finish from './scenes/Finish';
 
 
 const p = [
@@ -105,23 +106,25 @@ class CreateMeeting extends React.Component {
 
     // req
 
-    setTimeout(() => { this.setState({ meeting, flow:'finish' }); }, 1000);
+    setTimeout(() => { this.setState({ meeting, flow: 'finish' }); }, 1000);
   }
 
   render() {
     const {
-      flow, times, rooms, title,
+      flow, times, rooms, title, meeting,
     } = this.state;
     return (
       <Container>
         <Card>
           <CardContent>
-            {flow !== 'finish' ?
-              (<Typography variant="h3" align="center" gutterBottom>
+            {flow !== 'finish'
+              ? (
+                <Typography variant="h3" align="center" gutterBottom>
                 ایجاد یک جَلسه‌ی جدید
                 برای
-                {` ${title} `}
-              </Typography>) : (<div />) }
+                  {` ${title} `}
+                </Typography>
+              ) : (<div />) }
             {flow === 'times'
               ? (<Times polls={times} click={this.selectTime} />)
               : flow === 'loading' ? <LinearProgress color="secondary" />
@@ -129,10 +132,7 @@ class CreateMeeting extends React.Component {
                   : (<div />)}
             <div className="button-row">
               {flow === 'finish'
-                ? (
-                  <Button variant="contained" color="primary">
-                  ایجاد
-                  </Button>
+                ? (<Finish meeting={meeting} />
                 ) : (<div />)}
             </div>
           </CardContent>
