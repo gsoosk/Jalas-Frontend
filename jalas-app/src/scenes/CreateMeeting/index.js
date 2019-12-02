@@ -4,8 +4,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Typography, Button, LinearProgress } from '@material-ui/core';
 import './styles.scss';
-import axios from 'axios';
 import { connect } from 'react-redux';
+import Axios from '../../services/axios';
 import Times from './scenes/Times';
 import Rooms from './scenes/Rooms';
 import Finish from './scenes/Finish';
@@ -13,8 +13,8 @@ import Finish from './scenes/Finish';
 
 const p = [
   {
-    start_time: '2019-12-01T15:51:43.636Z',
-    end_time: '2019-12-01T17:51:43.636Z',
+    start_time: '2019-09-14T19:00:00.000Z',
+    end_time: '2019-09-14T20:00:00.000Z',
     negative: ['a', 'b'],
     positive: ['x', 'y'],
   },
@@ -26,14 +26,11 @@ const p = [
   },
 ];
 
-const r = [
-  {
-    room_name: 801,
-  },
-  {
-    room_name: 802,
-  },
-];
+const r = {
+  rooms: [
+    201, 202, 203,
+  ],
+};
 class CreateMeeting extends React.Component {
   constructor(props) {
     super(props);
@@ -55,27 +52,33 @@ class CreateMeeting extends React.Component {
     this.createMeeting = this.createMeeting.bind(this);
   }
 
-  selectTime(index) {
-    const { times } = this.state;
-    this.setState({
-      time: times[index],
-      flow: 'loading',
-    });
-    this.getRooms();
-  }
+
 
   getRooms() {
-    // Axios.get( , {
-    //
-    //   crossdomain: true,
-    // })
-    //   .then((response) => {
-    //     console.log(response);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //   });
-    setTimeout(() => { this.setState({ rooms: r, flow: 'rooms' }); }, 1000);
+    const { time } = this.state;
+    console.log(time);
+    Axios.get('/meetings/available', {
+      data: {
+        start_date_time: time.start_time.substr(0, 19),
+        end_date_time: time.end_time.substr(0, 19),
+      },
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+    setTimeout(() => { this.setState({ rooms: r.rooms, flow: 'rooms' }); }, 1000);
+  }
+
+  selectTime(index) {
+    const { times } = this.state;
+    const newTime = times[index];
+    this.setState({
+      time: newTime,
+      flow: 'loading',
+    }, () => {this.getRooms()});
   }
 
   selectRoom(index) {
@@ -84,13 +87,12 @@ class CreateMeeting extends React.Component {
     this.setState({
       room,
       flow: 'loading',
-    });
-    this.createMeeting(index);
+    }, () => {this.createMeeting()});
   }
 
-  createMeeting(roomIndex) {
+  createMeeting() {
     const {
-      poll, rooms, title, time,
+      poll, room, title, time,
     } = this.state;
     const negIds = poll.negative.map(o => o.id);
     const posIds = poll.positive.map(o => o.id);
@@ -100,7 +102,7 @@ class CreateMeeting extends React.Component {
       title,
       start_time: time.start_time,
       end_time: time.end_time,
-      room_id: rooms[roomIndex].room_name,
+      room_id: room,
       participants_id: participantsId,
     };
 
@@ -129,12 +131,9 @@ class CreateMeeting extends React.Component {
               ? (<Times polls={times} click={this.selectTime} />)
               : flow === 'loading' ? <LinearProgress color="secondary" />
                 : flow === 'rooms' ? <Rooms rooms={rooms} click={this.selectRoom} />
-                  : (<div />)}
-            <div className="button-row">
-              {flow === 'finish'
-                ? (<Finish meeting={meeting} />
-                ) : (<div />)}
-            </div>
+                  : flow === 'finish'
+                    ? (<Finish meeting={meeting} />
+                    ) : (<div />)}
           </CardContent>
         </Card>
       </Container>

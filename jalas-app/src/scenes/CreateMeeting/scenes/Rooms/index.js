@@ -21,7 +21,7 @@ function Rooms({ rooms, click }) {
                 <Row className="room-slot">
                   <MeetingRoomIcon fontSize="large" />
                   اتاق
-                  {` ${item.room_name} `}
+                  {` ${item} `}
                 </Row>
               </Container>
             </CardActionArea>
