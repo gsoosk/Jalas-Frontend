@@ -1,6 +1,6 @@
 /* eslint-disable prefer-template */
 export const baseConfig = {
-  baseURL: 'http://localhost:8001',
+  baseURL: 'http://localhost:7000',
 };
 
 export const tokenConfig = {

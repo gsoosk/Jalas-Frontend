@@ -61,8 +61,10 @@ class CreateMeeting extends React.Component {
         const rooms = response.data.rooms;
         if (rooms.length === 0) {
           toast.error(<div>در این زمان اتاقی  وجود ندارد</div>);
+          this.setState({ rooms, flow: 'times' });
+        } else {
+          this.setState({ rooms, flow: 'rooms' });
         }
-        this.setState({ rooms, flow: 'rooms' });
       })
       .catch((error) => {
         if (!error.response) {
