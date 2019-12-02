@@ -151,7 +151,7 @@ class CreateMeeting extends React.Component {
 
   cancelMeeting() {
     const { meeting_id } = this.state;
-    Axios.post('/cancel/', { meeting_id })
+    Axios.post('meetings/cancel', { meeting_id })
       .then((response) => {
         console.log(response.data);
         this.setState({ flow: 'times' });
@@ -178,7 +178,7 @@ class CreateMeeting extends React.Component {
       <Container>
         <Card>
           <CardContent>
-            {flow !== 'finish' || flow !== 'finish-loading'
+            {flow !== 'finish' && flow !== 'finish-loading'
               ? (
                 <Typography variant="h3" align="center" gutterBottom>
                 ایجاد یک جَلسه‌ی جدید
