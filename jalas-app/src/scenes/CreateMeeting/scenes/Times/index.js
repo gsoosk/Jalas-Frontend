@@ -49,14 +49,14 @@ function Times({ polls, click }) {
                     <Row>
                       <Check style={{ marginLeft: '10px' }} />
                       <span style={{ marginLeft: '2px' }}>
-                        {item.positive.length}
+                        {item.positive_voters.length}
                       </span>
                        رای موافق
                     </Row>
                     <Row>
                       <Clear style={{ marginLeft: '10px' }} />
                       <span style={{ marginLeft: '2px' }}>
-                        {item.negative.length}
+                        {item.negative_voters.length}
                       </span>
                       رای مخالف
                     </Row>

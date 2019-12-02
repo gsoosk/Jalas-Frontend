@@ -9,24 +9,18 @@ import EmojiPeopleIcon from '@material-ui/icons/People';
 import { Link } from 'react-router-dom';
 
 
-function PollItem({pollName, voteNumber, linkPath}) {
+function PollItem({ pollName, voteNumber, linkPath }) {
   return (
-    <Link to={linkPath} style={{textDecoration:"none"}}>
+    <Link to={linkPath} style={{ textDecoration: 'none' }}>
       <CardActionArea className="poll-item-area">
         <Container>
-          <Row className="poll-item-container">
-            <Col md={4}>
-              <Typography variant="h6">
-                {pollName}
-              </Typography>
+          <Row className="poll-item-container" style={{ width: '100%', display: 'felx', alignItems:'center', justifyContent:'center' }}>
 
-            </Col>
-            <Col md={8} className="poll-item-votes">
-              <Typography variant="body2" textAlign="left" style={{ direction: 'ltr !important', textAlign: 'left !important' }}>
-                {voteNumber}
-              </Typography>
-              <EmojiPeopleIcon style={{marginLeft:"5px"}}/>
-            </Col>
+            <Typography variant="h6" align="center">
+              {pollName}
+            </Typography>
+
+
           </Row>
         </Container>
       </CardActionArea>

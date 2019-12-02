@@ -1,12 +1,14 @@
 import React from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
-import { Typography, CircularProgress } from '@material-ui/core';
+import { Typography, CircularProgress, Button } from '@material-ui/core';
 import HistoryIcon from '@material-ui/icons/History';
 import UpdateIcon from '@material-ui/icons/Update';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 
 
-function Finish({ meeting, reserved }) {
+function Finish({
+  meeting, reserved, loading, click,
+}) {
   const getDate = time => time.substr(0, 10);
   const getHour = time => time.substr(11, 5);
   return (
@@ -50,18 +52,53 @@ function Finish({ meeting, reserved }) {
           برگزار خواهد شد.
         </Typography>
       </Row>
-      {!reserved
+      {loading
         ? (
           <Row style={{
             minHeight: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center',
           }}
           >
             <Typography variant="body1" align="center" gutterBottom>
-              <CircularProgress style={{margin:"10px"}}/>
+              <CircularProgress style={{ margin: '10px' }} />
           اتاق در حال رزرو شدن است.
             </Typography>
           </Row>
         ) : <div />}
+      {reserved
+        ? (
+          <Row style={{
+            minHeight: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+          }}
+          >
+            <Typography variant="body1" align="center" gutterBottom color="primary">
+              اتاق با موفقیت رزرو شده‌است
+            </Typography>
+          </Row>
+        ) : !loading
+          ? (
+            <div>
+              <Row style={{
+                minHeight: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+              }}
+              >
+                <Typography variant="body1" align="center" gutterBottom color="secondary">
+           اتاق به دلیل مشکلات سامانه‌ی رزرواسیون هنوز رزرو نشده‌است، و در اسرع وقت رزرو خواهد شد. شما می‌توانید در صورتی که هنوز رزرو انجام نشده باشد جلسه را کنسل کنید.
+                </Typography>
+                <br />
+              </Row>
+              <Row style={{
+                minHeight: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+              }}
+              >
+                <Button color="secondary" onClick={click} variant="raised">
+                کنسل کردن جلسه
+                </Button>
+              </Row>
+              {' '}
+
+            </div>
+          ) : <div />
+      }
 
     </Container>
   );
