@@ -9,12 +9,10 @@ import { Check, Clear } from '@material-ui/icons';
 
 function Times({ polls, click }) {
   const getDate = (time) => {
-    const date = new Date(time);
-    return `${date.getFullYear()}/${date.getMonth()}/${date.getDay()}`;
+    return time.substr(0, 10);
   };
   const getHour = (time) => {
-    const date = new Date(time);
-    return `${date.getHours()}:${date.getMinutes()}`;
+    return time.substr(11, 5);
   };
   return (
     <Container style={{ marginTop: '30px' }}>

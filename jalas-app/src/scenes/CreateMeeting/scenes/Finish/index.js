@@ -1,33 +1,31 @@
 import React from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
-import { Typography } from '@material-ui/core';
+import { Typography, CircularProgress } from '@material-ui/core';
 import HistoryIcon from '@material-ui/icons/History';
 import UpdateIcon from '@material-ui/icons/Update';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 
-function Finish({ meeting }) {
-  const getDate = (time) => {
-    const date = new Date(time);
-    return `${date.getFullYear()}/${date.getMonth()}/${date.getDay()}`;
-  };
-  const getHour = (time) => {
-    const date = new Date(time);
-    return `${date.getHours()}:${date.getMinutes()}`;
-  };
+
+function Finish({ meeting, reserved }) {
+  const getDate = time => time.substr(0, 10);
+  const getHour = time => time.substr(11, 5);
   return (
     <Container>
       <Typography variant="h3" align="center" gutterBottom>
        جلسه‌ی
         {` ${meeting.title}`}
       </Typography>
-      <Row style={{minHeight:'75px', display:'flex', justifyContent:'center', alignItems:'center'}}>
+      <Row style={{
+        minHeight: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+      }}
+      >
         <Col md={5}>
           <Typography variant="body1" align="center" gutterBottom>
             <HistoryIcon />
           از
-            {` ${getHour(meeting.start_time)} `}
+            {` ${getHour(meeting.start_date_time)} `}
           روز
-            {` ${getDate(meeting.start_time)} `}
+            {` ${getDate(meeting.start_date_time)} `}
           </Typography>
         </Col>
         <Col md={5}>
@@ -35,13 +33,16 @@ function Finish({ meeting }) {
           <Typography variant="body1" align="center" gutterBottom>
             <UpdateIcon />
           تا
-            {` ${getHour(meeting.end_time)} `}
+            {` ${getHour(meeting.end_date_time)} `}
           روز
-            {` ${getDate(meeting.end_time)} `}
+            {` ${getDate(meeting.end_date_time)} `}
           </Typography>
         </Col>
       </Row>
-      <Row style={{minHeight:'75px', display:'flex', justifyContent:'center', alignItems:'center'}}>
+      <Row style={{
+        minHeight: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+      }}
+      >
         <Typography variant="body1" align="center" gutterBottom>
           <MeetingRoomIcon />
           این جلسه در اتاق
@@ -49,6 +50,19 @@ function Finish({ meeting }) {
           برگزار خواهد شد.
         </Typography>
       </Row>
+      {!reserved
+        ? (
+          <Row style={{
+            minHeight: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+          }}
+          >
+            <Typography variant="body1" align="center" gutterBottom>
+              <CircularProgress style={{margin:"10px"}}/>
+          اتاق در حال رزرو شدن است.
+            </Typography>
+          </Row>
+        ) : <div />}
+
     </Container>
   );
 }

@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { Typography, Button, LinearProgress } from '@material-ui/core';
 import './styles.scss';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import Axios from '../../services/axios';
 import Times from './scenes/Times';
 import Rooms from './scenes/Rooms';
@@ -13,24 +14,19 @@ import Finish from './scenes/Finish';
 
 const p = [
   {
-    start_time: '2019-09-14T19:00:00.000Z',
-    end_time: '2019-09-14T20:00:00.000Z',
+    start_time: '2019-09-14T20:00:00',
+    end_time: '2019-09-14T21:00:00',
     negative: ['a', 'b'],
     positive: ['x', 'y'],
   },
   {
-    start_time: '2019-12-01T15:51:43.636Z',
-    end_time: '2019-12-01T17:51:43.636Z',
+    start_time: '2019-12-01T15:51:43',
+    end_time: '2019-12-01T17:51:43',
     negative: ['a', 'b'],
     positive: ['x', 'y'],
   },
 ];
 
-const r = {
-  rooms: [
-    201, 202, 203,
-  ],
-};
 class CreateMeeting extends React.Component {
   constructor(props) {
     super(props);
@@ -45,6 +41,7 @@ class CreateMeeting extends React.Component {
       title: poll ? poll.title : 'جلسه',
       meeting: {},
       poll,
+      reserved: false,
     };
     this.selectTime = this.selectTime.bind(this);
     this.getRooms = this.getRooms.bind(this);
@@ -53,23 +50,28 @@ class CreateMeeting extends React.Component {
   }
 
 
-
   getRooms() {
     const { time } = this.state;
-    console.log(time);
-    Axios.get('/meetings/available', {
-      data: {
-        start_date_time: time.start_time.substr(0, 19),
-        end_date_time: time.end_time.substr(0, 19),
-      },
-    })
+    // this.setState({ flow: 'loading' });
+    Axios.post('/meetings/available', {
+      start_date_time: time.start_time.substr(0, 19),
+      end_date_time: time.end_time.substr(0, 19),
+    }, { timeout: 6000 })
       .then((response) => {
-        console.log(response);
+        const rooms = response.data.rooms;
+        if (rooms.length === 0) {
+          toast.error(<div>در این زمان اتاقی  وجود ندارد</div>);
+        }
+        this.setState({ rooms, flow: 'rooms' });
       })
       .catch((error) => {
-        console.log(error.response);
+        if (!error.response) {
+          toast.error(<div>در حال حاضر سیستم رزرواسیون در دسترس نیست. لطفا دوباره تلاش کنید.</div>);
+        } else {
+          toast.error(<div>{error.response.data}</div>);
+        }
+        this.setState({ flow: 'times' });
       });
-    setTimeout(() => { this.setState({ rooms: r.rooms, flow: 'rooms' }); }, 1000);
   }
 
   selectTime(index) {
@@ -78,7 +80,7 @@ class CreateMeeting extends React.Component {
     this.setState({
       time: newTime,
       flow: 'loading',
-    }, () => {this.getRooms()});
+    }, () => { this.getRooms(); });
   }
 
   selectRoom(index) {
@@ -87,7 +89,7 @@ class CreateMeeting extends React.Component {
     this.setState({
       room,
       flow: 'loading',
-    }, () => {this.createMeeting()});
+    }, () => { this.createMeeting(); });
   }
 
   createMeeting() {
@@ -100,20 +102,33 @@ class CreateMeeting extends React.Component {
 
     const meeting = {
       title,
-      start_time: time.start_time,
-      end_time: time.end_time,
+      start_date_time: time.start_time,
+      end_date_time: time.end_time,
       room_id: room,
       participants_id: participantsId,
     };
 
-    // req
-
-    setTimeout(() => { this.setState({ meeting, flow: 'finish' }); }, 1000);
+    Axios.post('/meetings/', meeting, { timeout: 6000 })
+      .then((response) => {
+        this.setState({ flow: 'finish', reserved: true });
+        toast.success(<div>رزرود</div>);
+      })
+      .catch((error) => {
+        console.log(error);
+        if (!error.response) {
+          toast.error(<div>در حال حاضر سیستم رزرواسیون در دسترس نیست. لطفا دوباره تلاش کنید.</div>);
+        } else {
+          console.log(error.response);
+          toast.error(<div>{error.response.data}</div>);
+        }
+        this.setState({ flow: 'finish' });
+      });
+    this.setState({ meeting, flow: 'finish' });
   }
 
   render() {
     const {
-      flow, times, rooms, title, meeting,
+      flow, times, rooms, title, meeting, reserved,
     } = this.state;
     return (
       <Container>
@@ -132,7 +147,7 @@ class CreateMeeting extends React.Component {
               : flow === 'loading' ? <LinearProgress color="secondary" />
                 : flow === 'rooms' ? <Rooms rooms={rooms} click={this.selectRoom} />
                   : flow === 'finish'
-                    ? (<Finish meeting={meeting} />
+                    ? (<Finish meeting={meeting} reserved={reserved} />
                     ) : (<div />)}
           </CardContent>
         </Card>
