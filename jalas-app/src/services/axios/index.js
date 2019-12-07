@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { baseConfig, tokenConfig } from './config';
+import { baseConfig} from './config';
 
 const Axios = axios.create(baseConfig);
 // Axios.interceptors.request.use((config) => {
