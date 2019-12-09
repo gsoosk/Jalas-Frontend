@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { MuiThemeProvider } from '@material-ui/core';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import JalasApp from './services/redux';
 import theme from './assets/theme/MUITheme';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,19 +20,26 @@ const store = createStore(JalasApp, applyMiddleware(thunk));
 
 function App() {
   return (
-    <Router>
-      <Provider store={store}>
-        <MuiThemeProvider theme={theme}>
-          <Navbar />
-          <div className="main-page">
-            <Toast />
-            <Route path="/polls" exact component={Polls} />
-            <Route path="/createMeeting/:pollID" component={CreateMeeting} />
-            <Route path="/createPoll" component={CreatePoll} />
-          </div>
-        </MuiThemeProvider>
-      </Provider>
-    </Router>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <Router>
+        <Provider store={store}>
+
+          <MuiThemeProvider theme={theme}>
+
+            <div dir="rtl">
+              <Navbar />
+              <div className="main-page">
+                <Toast />
+                <Route path="/polls" exact component={Polls} />
+                <Route path="/createMeeting/:pollID" component={CreateMeeting} />
+                <Route path="/createPoll" component={CreatePoll} />
+              </div>
+            </div>
+
+          </MuiThemeProvider>
+        </Provider>
+      </Router>
+    </MuiPickersUtilsProvider>
   );
 }
 
