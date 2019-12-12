@@ -4,25 +4,29 @@ import {
   Card, Typography, CardContent, TextField, Button,
 } from '@material-ui/core';
 import './styles.scss';
+import { toast } from 'react-toastify';
 import AddPollTime from './components/AddPollTime';
 import AddParticipants from './components/AddParticipants';
+import Axios from '../../services/axios';
+import { defaultUser } from '../../services/axios/config';
 
 class CreatePoll extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initState = {
       times: [],
       start: new Date(),
       end: new Date(),
       participants: [],
-      name: '',
       email: '',
       title: '',
     };
+    this.state = this.initState;
     this.addTime = this.addTime.bind(this);
     this.deleteTime = this.deleteTime.bind(this);
     this.addParticipant = this.addParticipant.bind(this);
     this.deleteParticipant = this.deleteParticipant.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
   addTime() {
@@ -49,14 +53,12 @@ class CreatePoll extends React.Component {
   }
 
   addParticipant() {
-    const { name, email } = this.state;
+    const { email } = this.state;
     const newParticipant = {
-      name,
       email,
     };
     this.setState(prev => ({
       participants: prev.participants.concat(newParticipant),
-      name: '',
       email: '',
     }));
   }
@@ -69,6 +71,30 @@ class CreatePoll extends React.Component {
         participants,
       };
     });
+  }
+
+  submit() {
+    const { title, times, participants } = this.state;
+    const poll = {
+      title,
+      creator_id: defaultUser,
+      choices: times,
+      participants,
+    };
+    Axios.post('polls/create/', poll)
+      .then((response) => {
+        console.log(response.data);
+        this.setState(this.initState);
+        toast.success(<div>نظرسنجی با موفقیت ایجاد شد.</div>);
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response) {
+          toast.error(<div>{error.response.data}</div>);
+        } else {
+          toast.error(<div>خطایی رخ داده است.</div>);
+        }
+      });
   }
 
   render() {
@@ -112,8 +138,6 @@ class CreatePoll extends React.Component {
                   <AddParticipants
                     participants={participants}
                     deleteParticipants={this.deleteParticipant}
-                    name={name}
-                    handleName={(newName) => { this.setState({ name: newName.target.value }); }}
                     email={email}
                     handleEmail={(newEmail) => { this.setState({ email: newEmail.target.value }); }}
                     onAdd={this.addParticipant}
@@ -125,6 +149,7 @@ class CreatePoll extends React.Component {
                     color="secondary"
                     style={{ margin: '10px' }}
                     disabled={!title}
+                    onClick={this.submit}
                   >
                     ثبت
                   </Button>

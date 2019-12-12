@@ -51,6 +51,7 @@ function AddPollTime({
             onDelete={() => { deleteTime(index); }}
             firstTitle="تاریخ شروع: "
             secondTitle="تاریخ پایان: "
+            disableFirst={false}
           />
         ))}
       </Row>

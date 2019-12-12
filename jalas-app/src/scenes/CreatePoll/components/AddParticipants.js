@@ -7,21 +7,13 @@ import './styles.scss';
 import PollTime from './PollTime';
 
 function AddParticipants({
-  name, handleName, email, handleEmail, onAdd, participants, deleteParticipants,
+  email, handleEmail, onAdd, participants, deleteParticipants,
 }) {
   return (
     <Container className="add-poll-container">
       <Row>
-        <Col md={2} style={{ display: 'flex', alignItems: 'center' }}>
+        <Col md={4} style={{ display: 'flex', alignItems: 'center' }}>
           اضافه کردن افراد:
-        </Col>
-        <Col md={4} style={{ display: 'flex', justifyContent: 'center' }}>
-          <TextField
-            label="نام"
-            value={name}
-            onChange={handleName}
-            style={{ width: '100%', margin: '10px' }}
-          />
         </Col>
         <Col md={4}>
           <TextField
@@ -31,8 +23,14 @@ function AddParticipants({
             style={{ width: '100%', margin: '10px' }}
           />
         </Col>
-        <Col md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Fab color="primary" aria-label="add" size="medium" onClick={onAdd}>
+        <Col md={4} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Fab
+            color="primary"
+            aria-label="add"
+            size="medium"
+            onClick={onAdd}
+            disabled={!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email) || !email}
+          >
             <AddIcon />
           </Fab>
         </Col>
@@ -42,8 +40,8 @@ function AddParticipants({
           <PollTime
             start={item.name}
             end={item.email}
-            firstTitle="نام "
-            secondTitle="ایمیل"
+            secondTitle="ایمیل :  "
+            disableFirst
             onDelete={() => { deleteParticipants(index); }}
           />
         ))}
