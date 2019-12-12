@@ -5,20 +5,20 @@ import { Fab, Typography } from '@material-ui/core';
 import './styles.scss';
 import RemoveIcon from '@material-ui/icons/Remove';
 
-function PollTime({ start, end, onDelete }) {
+function PollTime({ start, end, onDelete, firstTitle, secondTitle }) {
   return (
     <Container className="poll-time-container">
       <Row>
         <Col md={2} />
         <Col md={4}>
-        تاریخ شروع :
+          {firstTitle}
           <Typography variant="caption" style={{ margin: '5px' }}>
             {start.toLocaleString()}
           </Typography>
 
         </Col>
         <Col md={4}>
-        تاریخ پایان :
+          {secondTitle}
           <Typography variant="caption" style={{ margin: '5px' }}>
             {end.toLocaleString()}
           </Typography>

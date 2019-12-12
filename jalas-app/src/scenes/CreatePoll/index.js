@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import './styles.scss';
 import AddPollTime from './components/AddPollTime';
+import AddParticipants from './components/AddParticipants';
 
 class CreatePoll extends React.Component {
   constructor(props) {
@@ -13,9 +14,15 @@ class CreatePoll extends React.Component {
       times: [],
       start: new Date(),
       end: new Date(),
+      participants: [],
+      name: '',
+      email: '',
+      title: '',
     };
     this.addTime = this.addTime.bind(this);
     this.deleteTime = this.deleteTime.bind(this);
+    this.addParticipant = this.addParticipant.bind(this);
+    this.deleteParticipant = this.deleteParticipant.bind(this);
   }
 
   addTime() {
@@ -41,8 +48,33 @@ class CreatePoll extends React.Component {
     });
   }
 
+  addParticipant() {
+    const { name, email } = this.state;
+    const newParticipant = {
+      name,
+      email,
+    };
+    this.setState(prev => ({
+      participants: prev.participants.concat(newParticipant),
+      name: '',
+      email: '',
+    }));
+  }
+
+  deleteParticipant(index) {
+    this.setState((prev) => {
+      const participants = prev.participants;
+      participants.splice(index, 1);
+      return {
+        participants,
+      };
+    });
+  }
+
   render() {
-    const { times, start, end } = this.state;
+    const {
+      times, start, end, participants, name, email, title,
+    } = this.state;
     return (
       <Container>
         <Card>
@@ -55,7 +87,13 @@ class CreatePoll extends React.Component {
                 <Row>
                   <Col md={3} />
                   <Col md={6}>
-                    <TextField id="poll_title" label="نام نظرسنجی" className="create_poll_title_name" />
+                    <TextField
+                      value={title}
+                      id="poll_title"
+                      label="نام نظرسنجی"
+                      className="create_poll_title_name"
+                      onChange={(newTitle) => { this.setState({ title: newTitle.target.value }); }}
+                    />
                   </Col>
                   <Col md={3} />
                 </Row>
@@ -70,8 +108,24 @@ class CreatePoll extends React.Component {
                     deleteTime={this.deleteTime}
                   />
                 </Row>
+                <Row>
+                  <AddParticipants
+                    participants={participants}
+                    deleteParticipants={this.deleteParticipant}
+                    name={name}
+                    handleName={(newName) => { this.setState({ name: newName.target.value }); }}
+                    email={email}
+                    handleEmail={(newEmail) => { this.setState({ email: newEmail.target.value }); }}
+                    onAdd={this.addParticipant}
+                  />
+                </Row>
                 <Row className="create_poll_form_container" style={{ width: '100%' }}>
-                  <Button variant="contained" color="secondary" style={{ margin: '10px' }}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    style={{ margin: '10px' }}
+                    disabled={!title}
+                  >
                     ثبت
                   </Button>
                 </Row>
