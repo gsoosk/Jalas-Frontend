@@ -2,7 +2,7 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Typography, Button, LinearProgress } from '@material-ui/core';
+import { Typography, LinearProgress } from '@material-ui/core';
 import './styles.scss';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -10,22 +10,6 @@ import Axios from '../../services/axios';
 import Times from './scenes/Times';
 import Rooms from './scenes/Rooms';
 import Finish from './scenes/Finish';
-
-
-// const p = [
-//   {
-//     start_time: '2019-09-14T20:00:00',
-//     end_time: '2019-09-14T21:00:00',
-//     negative_voters: ['a', 'b'],
-//     positive_voters: ['x', 'y'],
-//   },
-//   {
-//     start_time: '2019-12-01T15:51:43',
-//     end_time: '2019-12-01T17:51:43',
-//     negative_voters: ['a', 'b'],
-//     positive_voters: ['x', 'y'],
-//   },
-// ];
 
 class CreateMeeting extends React.Component {
   constructor(props) {
@@ -112,7 +96,7 @@ class CreateMeeting extends React.Component {
 
   createMeeting() {
     const {
-      poll, room, title, time, times,
+      room, title, time, times,
     } = this.state;
     const p = new Set();
     times.forEach((item) => {

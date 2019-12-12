@@ -1,0 +1,13 @@
+.poll-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.add-poll-button {
+  position: absolute !important;
+  left: 0;
+  top: 0;
+}
