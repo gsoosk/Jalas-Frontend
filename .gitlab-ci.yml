@@ -1,0 +1,21 @@
+image: kkarczmarczyk/node-yarn:latest
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+  - node_modules/
+
+build:
+  stage: build
+  script:
+    - yarn install
+    - yarn build
+
+test:
+  stage: test
+  script:
+    - echo "Running react test suite......"
+
