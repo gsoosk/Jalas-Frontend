@@ -99,7 +99,7 @@ class CreatePoll extends React.Component {
 
   render() {
     const {
-      times, start, end, participants, name, email, title,
+      times, start, end, participants, email, title,
     } = this.state;
     return (
       <Container>
