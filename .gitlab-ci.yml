@@ -1,4 +1,6 @@
 image: kkarczmarczyk/node-yarn:latest
+before_script:
+  - cd jalas-app
 stages:
   - build
   - test
@@ -6,7 +8,7 @@ stages:
 
 cache:
   paths:
-  - node_modules/
+  - jalas-app/node_modules/
 
 build:
   stage: build
