@@ -12,6 +12,7 @@ import Polls from './scenes/Polls';
 import Navbar from './components/Navbar';
 import './assets/fonts/generalStyles.css';
 import CreateMeeting from './scenes/CreateMeeting';
+import MeetingInfo from "./scenes/MeetingInfo";
 
 const store = createStore(JalasApp, applyMiddleware(thunk));
 
@@ -25,6 +26,7 @@ function App() {
             <Toast />
             <Route path="/polls" exact component={Polls} />
             <Route path="/createMeeting/:pollID" component={CreateMeeting} />
+            <Route path="/meetings/:meetingID" component={MeetingInfo} />
           </div>
         </MuiThemeProvider>
       </Provider>
