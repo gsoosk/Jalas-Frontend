@@ -15,6 +15,7 @@ import Navbar from './components/Navbar';
 import './assets/fonts/generalStyles.css';
 import CreateMeeting from './scenes/CreateMeeting';
 import CreatePoll from './scenes/CreatePoll';
+import Poll from './scenes/Poll';
 
 const store = createStore(JalasApp, applyMiddleware(thunk));
 
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/polls" exact component={Polls} />
                 <Route path="/createMeeting/:pollID" component={CreateMeeting} />
                 <Route path="/createPoll" component={CreatePoll} />
+                <Route path="/polls/:pollID" component={Poll}/>
               </div>
             </div>
 
