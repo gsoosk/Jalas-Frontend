@@ -28,6 +28,7 @@ class CreateMeeting extends React.Component {
       reserved: false,
       meeting_id: -1,
       canceling: false,
+      participants: [],
     };
     this.selectTime = this.selectTime.bind(this);
     this.getRooms = this.getRooms.bind(this);
@@ -41,7 +42,7 @@ class CreateMeeting extends React.Component {
     Axios.get(`/polls/${pollID}`)
       .then((response) => {
         console.log(response);
-        this.setState({ times: response.data.choices });
+        this.setState({ times: response.data.choices, participants: response.data.participants });
       })
       .catch((error) => {
         console.log(error);
@@ -96,23 +97,17 @@ class CreateMeeting extends React.Component {
 
   createMeeting() {
     const {
-      room, title, time, times,
+      room, title, time, participants,
     } = this.state;
-    const p = new Set();
-    times.forEach((item) => {
-      item.negative_voters.forEach((n) => { p.add(n); });
-      item.positive_voters.forEach((po) => { p.add(po); });
-    });
-    const pList = [...p];
 
-    console.log('list', pList);
     const meeting = {
       title,
       start_date_time: time.start_time,
       end_date_time: time.end_time,
       room_id: room,
-      participants_id: pList,
+      participants_id: participants,
     };
+    console.log(meeting);
 
     Axios.post('/meetings/', meeting)
       .then((response) => {

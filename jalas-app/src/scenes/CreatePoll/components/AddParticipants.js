@@ -1,5 +1,4 @@
 import React from 'react';
-import { DateTimePicker } from '@material-ui/pickers';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Fab, TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -29,7 +28,7 @@ function AddParticipants({
             aria-label="add"
             size="medium"
             onClick={onAdd}
-            disabled={!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email) || !email}
+            disabled={!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email) || !email}
           >
             <AddIcon />
           </Fab>

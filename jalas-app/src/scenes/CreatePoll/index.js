@@ -99,7 +99,7 @@ class CreatePoll extends React.Component {
 
   render() {
     const {
-      times, start, end, participants, name, email, title,
+      times, start, end, participants, email, title,
     } = this.state;
     return (
       <Container>
@@ -148,7 +148,7 @@ class CreatePoll extends React.Component {
                     variant="contained"
                     color="secondary"
                     style={{ margin: '10px' }}
-                    disabled={!title}
+                    disabled={!title || times.length === 0}
                     onClick={this.submit}
                   >
                     ثبت

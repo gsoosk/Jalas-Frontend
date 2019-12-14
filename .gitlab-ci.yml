@@ -1,0 +1,30 @@
+before_script:
+  - cd jalas-app
+stages:
+  - build
+  - test
+  - integration
+
+
+build:
+  stage: build
+  image: kkarczmarczyk/node-yarn:latest
+  
+  cache:
+    paths:
+      - jalas-app/node_modules/
+  script:
+    - yarn install
+    - yarn build
+
+test:
+  stage: test
+  script:
+    - echo "Running react test suite......"
+
+integration:
+  stage: integration
+  script:
+    - echo "Runing integration....."
+    
+
