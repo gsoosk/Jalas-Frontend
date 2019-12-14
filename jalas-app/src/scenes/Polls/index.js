@@ -3,11 +3,13 @@ import Container from 'react-bootstrap/Container';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { connect } from 'react-redux';
-import { Typography } from '@material-ui/core';
-import { toast } from 'react-toastify';
+import { Fab, Typography } from '@material-ui/core';
 import { savePoll } from './services/actions/savePollActions';
 import PollItem from './components/PollItem/index';
 import Axios from '../../services/axios';
+import './styles.scss';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { Link } from 'react-router-dom';
 
 class Polls extends React.Component {
   constructor(props) {
@@ -35,9 +37,17 @@ class Polls extends React.Component {
       <Container>
         <Card>
           <CardContent>
-            <Typography variant="h3" align="center" gutterBottom>
-          نظرسنجی‌های شما
-            </Typography>
+            <div className="poll-header">
+              <Typography variant="h3" align="center" gutterBottom>
+                نظرسنجی‌های شما
+              </Typography>
+              <Link to="/createPoll">
+                <Fab variant="extended" color="primary" className="add-poll-button">
+                  <AddCircleOutlineIcon className="navbar-button-icon" />
+                ایجاد
+                </Fab>
+              </Link>
+            </div>
             {polls.map(item => (<PollItem pollName={item.title} linkPath={`createMeeting/${item.id.toString()}`} />))}
             <Typography variant="body2" align="center" color="textSecondary" style={{ paddingTop: '10px' }}>
             برای ایجاد جلسه‌ی جدید یکی از نظرسنجی‌های بالا را انتخاب کنید.
