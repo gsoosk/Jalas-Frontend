@@ -14,19 +14,20 @@ import Axios from '../../services/axios';
 class MeetingInfo extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       meeting: [],
+      room: [],
     };
   }
 
-  componentWillMount() {
-  //   const { savePolls } = this.props;
-  //   const { meeting } = this.state;
-    Axios.get('/meetings', { params: { meeting_id: 1 } })
+  componentDidMount() {
+    const id = this.props.match.params.meetingID;
+    Axios.get(`/meetings/${id}`)
       .then((response) => {
         console.log(response.data);
-        this.setState({ meeting: response.data });
-        // savePolls(response.data.polls);
+        console.log('success\n')
+        this.setState({ meeting: response.data, room: response.data.room });
       })
       .catch((error) => {
         console.log(error);
@@ -34,17 +35,18 @@ class MeetingInfo extends React.Component {
   }
 
   render() {
-    // const getDate = time => time.substr(0, 10);
-    // const getHour = time => time.substr(11, 5);
     const {
       meeting,
+      room,
     } = this.state;
+    const getDate = time => time ? time.substr(0, 10) : '';
+    const getHour = time => time ? time.substr(11, 5) : '';
     return (
       <Container>
         <Container>
           <CardContent>
             <Card>
-              <Typography variant="h3" align="center" style={{marginTop: 20,}} gutterBottom>
+              <Typography variant="h3" align="center" style={{ marginTop: 20 }} gutterBottom>
                                   جلسه‌ی
                 {` ${meeting.title}`}
               </Typography>
@@ -55,20 +57,20 @@ class MeetingInfo extends React.Component {
                 <Col md={5}>
                   <Typography variant="body1" align="center" gutterBottom>
                     <HistoryIcon />
-                                          از
-                    {/* {` ${getHour(meeting.start_date_time)} `} */}
-                    {/*        روز */}
-                    {/* {` ${getDate(meeting.start_date_time)} `} */}
+                    از
+                    {` ${getHour(meeting.start_date_time)} `}
+                    روز
+                    {` ${getDate(meeting.start_date_time)} `}
                   </Typography>
                 </Col>
                 <Col md={5}>
 
                   <Typography variant="body1" align="center" gutterBottom>
                     <UpdateIcon />
-                                          تا
-                    {/* {` ${getHour(meeting.end_date_time)} `} */}
-                    {/*        روز */}
-                    {/* {` ${getDate(meeting.end_date_time)} `} */}
+                    تا
+                    {` ${getHour(meeting.end_date_time)} `}
+                    روز
+                    {` ${getDate(meeting.end_date_time)} `}
                   </Typography>
                 </Col>
               </Row>
@@ -79,7 +81,7 @@ class MeetingInfo extends React.Component {
                 <Typography variant="body1" align="center" gutterBottom>
                   <MeetingRoomIcon />
                                       این جلسه در اتاق
-                  {` ${meeting.room_id} `}
+                  {` ${room.room_name} `}
                                       برگزار خواهد شد.
                 </Typography>
               </Row>

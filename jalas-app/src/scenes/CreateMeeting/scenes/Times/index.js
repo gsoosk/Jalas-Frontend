@@ -8,12 +8,8 @@ import { Check, Clear } from '@material-ui/icons';
 
 
 function Times({ polls, click }) {
-  const getDate = (time) => {
-    return time.substr(0, 10);
-  };
-  const getHour = (time) => {
-    return time.substr(11, 5);
-  };
+  const getDate = time => time.substr(0, 10);
+  const getHour = time => time.substr(11, 5);
   return (
     <Container style={{ marginTop: '30px' }}>
       <Typography variant="body2" align="center" color="textSecondary" style={{ paddingTop: '10px' }}>
