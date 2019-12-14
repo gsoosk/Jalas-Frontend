@@ -28,7 +28,7 @@ function AddParticipants({
             aria-label="add"
             size="medium"
             onClick={onAdd}
-            disabled={!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email) || !email}
+            disabled={!/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email) || !email}
           >
             <AddIcon />
           </Fab>
