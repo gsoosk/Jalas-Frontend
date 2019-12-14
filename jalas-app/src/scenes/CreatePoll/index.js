@@ -148,7 +148,7 @@ class CreatePoll extends React.Component {
                     variant="contained"
                     color="secondary"
                     style={{ margin: '10px' }}
-                    disabled={!title}
+                    disabled={!title || times.length === 0}
                     onClick={this.submit}
                   >
                     ثبت
