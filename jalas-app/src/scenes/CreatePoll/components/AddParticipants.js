@@ -37,8 +37,8 @@ function AddParticipants({
       <Row>
         {participants.map((item, index) => (
           <PollTime
-            start={item.name}
-            end={item.email}
+            start=""
+            end={item}
             secondTitle="ایمیل :  "
             disableFirst
             onDelete={() => { deleteParticipants(index); }}

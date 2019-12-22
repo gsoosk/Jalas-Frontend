@@ -54,9 +54,7 @@ class CreatePoll extends React.Component {
 
   addParticipant() {
     const { email } = this.state;
-    const newParticipant = {
-      email,
-    };
+    const newParticipant = email;
     this.setState(prev => ({
       participants: prev.participants.concat(newParticipant),
       email: '',
@@ -88,9 +86,9 @@ class CreatePoll extends React.Component {
         toast.success(<div>نظرسنجی با موفقیت ایجاد شد.</div>);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         if (error.response) {
-          toast.error(<div>{error.response.data}</div>);
+          toast.error(<div>{JSON.stringify(error.response.data)}</div>);
         } else {
           toast.error(<div>خطایی رخ داده است.</div>);
         }
