@@ -8,6 +8,7 @@ import Container from 'react-bootstrap/Container';
 import './styles.scss';
 import PollIcon from '@material-ui/icons/Poll';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { Link } from 'react-router-dom';
 
 
@@ -35,6 +36,12 @@ function Index() {
                   <GroupWorkIcon className="navbar-button-icon" />
                   جلسات
                 </Fab>
+                <Link to="/login">
+                  <Fab variant="extended" color="secondary" className="navbar-button">
+                    <VpnKeyIcon className="navbar-button-icon" />
+                    ورود
+                  </Fab>
+                </Link>
               </Col>
             </Row>
           </Container>
