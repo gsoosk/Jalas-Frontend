@@ -10,10 +10,11 @@ import PollIcon from '@material-ui/icons/Poll';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { Link } from 'react-router-dom';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 
-
-function Index() {
+function Index(props) {
+  console.log(props);
   return (
     <div>
       <AppBar color="primary">
@@ -26,6 +27,19 @@ function Index() {
                 </h1>
               </Col>
               <Col md={10} className="navbar-bartitle">
+                <Fab
+                  variant="extended"
+                  color="secondary"
+                  className="navbar-button-exit"
+                  onClick={() => {
+                    localStorage.setItem('token', '');
+                    localStorage.setItem('user_id', '');
+                    props.history.push('/login');
+                  }}
+                >
+                  <ExitToAppIcon className="navbar-button-icon" />
+                  خروج
+                </Fab>
                 <Link to="/polls">
                   <Fab variant="extended" color="secondary" className="navbar-button">
                     <PollIcon className="navbar-button-icon" />

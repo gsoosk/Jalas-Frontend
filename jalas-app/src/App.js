@@ -30,7 +30,7 @@ function App() {
         <Provider store={store}>
           <MuiThemeProvider theme={theme}>
             <div dir="rtl">
-              <Navbar />
+              <Route path="/*" exact component={Navbar} />
               <div className="main-page">
                 <Toast />
                 <Route path="/polls" exact component={Polls} />
