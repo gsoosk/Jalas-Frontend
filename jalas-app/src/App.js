@@ -36,6 +36,7 @@ function App() {
                 <Route path="/polls" exact component={Polls} />
                 <Route path="/createMeeting/:pollID" component={CreateMeeting} />
                 <Route path="/createPoll" component={CreatePoll} />
+                <Route path="/editPoll/:pollID" component={CreatePoll} />
                 <Route path="/polls/:pollID" component={Poll} />
                 <Route path="/meetings/:meetingID" component={MeetingInfo} />
                 <Route path="/login" component={Login} />
