@@ -2,13 +2,10 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { connect } from 'react-redux';
-import { Fab, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import ListItem from '../../components/ListItem/index';
 import Axios from '../../services/axios';
 import './styles.scss';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import { Link } from 'react-router-dom';
 
 class Meetings extends React.Component {
   constructor(props) {
