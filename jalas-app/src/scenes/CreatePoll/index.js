@@ -116,7 +116,7 @@ class CreatePoll extends React.Component {
 
   updatePoll(poll) {
     const { match, history } = this.props;
-    if (match.params.pollId) {
+    if (match.params.pollID) {
       Axios.put(`polls/create/${match.params.pollID}/`, poll)
         .then((response) => {
           console.log(response.data);
