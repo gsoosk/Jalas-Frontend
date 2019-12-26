@@ -11,6 +11,7 @@ import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { Link } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 
 function Index(props) {
@@ -34,6 +35,7 @@ function Index(props) {
                   onClick={() => {
                     localStorage.setItem('token', '');
                     localStorage.setItem('user_id', '');
+                    localStorage.setItem('email', '');
                     props.history.push('/login');
                   }}
                 >
@@ -50,12 +52,22 @@ function Index(props) {
                   <GroupWorkIcon className="navbar-button-icon" />
                   جلسات
                 </Fab>
-                <Link to="/login">
-                  <Fab variant="extended" color="secondary" className="navbar-button">
-                    <VpnKeyIcon className="navbar-button-icon" />
-                    ورود
-                  </Fab>
-                </Link>
+                {localStorage.getItem('email')
+                  ? (
+                    <Fab variant="extended" color="secondary" className="navbar-button">
+                      <AccountCircleIcon className="navbar-button-icon" />
+                      {localStorage.getItem('email')}
+                    </Fab>
+                  )
+                  : (
+                    <Link to="/login">
+                      <Fab variant="extended" color="secondary" className="navbar-button">
+                        <VpnKeyIcon className="navbar-button-icon" />
+                      ورود
+                      </Fab>
+                    </Link>
+                  )}
+
               </Col>
             </Row>
           </Container>

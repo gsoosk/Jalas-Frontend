@@ -30,6 +30,7 @@ class Login extends React.Component {
         toast.success(<div>ورود با موفقیت انجام شد.</div>);
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user_id', response.data.user_id);
+        localStorage.setItem('email', response.data.email);
         this.setState({
           email: '',
           password: '',
