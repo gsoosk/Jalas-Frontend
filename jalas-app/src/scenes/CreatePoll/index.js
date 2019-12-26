@@ -19,9 +19,8 @@ class CreatePoll extends React.Component {
       participants: [],
       email: '',
       title: '',
-      componentState: '',
     };
-    this.state = this.initState;
+    this.state = { ...this.initState, componentState: '' };
     this.addTime = this.addTime.bind(this);
     this.deleteTime = this.deleteTime.bind(this);
     this.addParticipant = this.addParticipant.bind(this);
@@ -33,9 +32,7 @@ class CreatePoll extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-    if (match.url === '/createPoll') {
-      this.setState({ componentState: 'create' });
-    } else {
+    if (match.params.pollID) {
       this.setState({ componentState: 'update' });
       Axios.get(`polls/create/${match.params.pollID}`)
         .then((response) => {
@@ -53,6 +50,8 @@ class CreatePoll extends React.Component {
             toast.error(<div>خطایی رخ داده است.</div>);
           }
         });
+    } else {
+      this.setState({ componentState: 'create' });
     }
   }
 
@@ -117,20 +116,22 @@ class CreatePoll extends React.Component {
 
   updatePoll(poll) {
     const { match, history } = this.props;
-    Axios.put(`polls/create/${match.params.pollID}/`, poll)
-      .then((response) => {
-        console.log(response.data);
-        toast.success(<div>نظرسنجی با موفقیت تفییر یافت.</div>);
-        history.push('/polls');
-      })
-      .catch((error) => {
-        console.log(error.response);
-        if (error.response) {
-          toast.error(<div>{JSON.stringify(error.response.data)}</div>);
-        } else {
-          toast.error(<div>خطایی رخ داده است.</div>);
-        }
-      });
+    if (match.params.pollId) {
+      Axios.put(`polls/create/${match.params.pollID}/`, poll)
+        .then((response) => {
+          console.log(response.data);
+          toast.success(<div>نظرسنجی با موفقیت تفییر یافت.</div>);
+          history.push('/polls');
+        })
+        .catch((error) => {
+          console.log(error.response);
+          if (error.response) {
+            toast.error(<div>{JSON.stringify(error.response.data)}</div>);
+          } else {
+            toast.error(<div>خطایی رخ داده است.</div>);
+          }
+        });
+    }
   }
 
   submit() {
