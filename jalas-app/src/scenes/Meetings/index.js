@@ -4,27 +4,24 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { connect } from 'react-redux';
 import { Fab, Typography } from '@material-ui/core';
-import { savePoll } from './services/actions/savePollActions';
 import ListItem from '../../components/ListItem/index';
 import Axios from '../../services/axios';
 import './styles.scss';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Link } from 'react-router-dom';
 
-class Polls extends React.Component {
+class Meetings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      polls: [],
+      meetings: [],
     };
   }
 
   componentDidMount() {
-    const { savePolls } = this.props;
-    Axios.get('/polls', { params: { user: 1 } })
+    Axios.get('/meetings/all')
       .then((response) => {
-        this.setState({ polls: response.data.polls });
-        savePolls(response.data.polls);
+        this.setState({ meetings: response.data.meetings });
       })
       .catch((error) => {
         console.log(error);
@@ -32,25 +29,19 @@ class Polls extends React.Component {
   }
 
   render() {
-    const { polls } = this.state;
+    const { meetings } = this.state;
     return (
       <Container>
         <Card>
           <CardContent>
-            <div className="poll-header">
+            <div className="meeting-header">
               <Typography variant="h3" align="center" gutterBottom>
-                نظرسنجی‌های شما
+                                جلسات شما
               </Typography>
-              <Link to="/createPoll">
-                <Fab variant="extended" color="primary" className="add-poll-button">
-                  <AddCircleOutlineIcon className="navbar-button-icon" />
-                ایجاد
-                </Fab>
-              </Link>
             </div>
-            {polls.map(item => (<ListItem itemName={item.title} linkPath={`createMeeting/${item.id.toString()}`} />))}
+            {meetings.map(item => (<ListItem itemName={item.title} linkPath={`meetings/${item.id.toString()}`} />))}
             <Typography variant="body2" align="center" color="textSecondary" style={{ paddingTop: '10px' }}>
-            برای ایجاد جلسه‌ی جدید یکی از نظرسنجی‌های بالا را انتخاب کنید.
+                            برای مشاهده جزئیات هر جلسه آن را انتخاب کنید.
             </Typography>
           </CardContent>
         </Card>
@@ -59,8 +50,4 @@ class Polls extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  savePolls: (poll) => { dispatch(savePoll(poll)); },
-});
-
-export default connect(null, mapDispatchToProps)(Polls);
+export default Meetings;

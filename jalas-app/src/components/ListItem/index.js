@@ -7,15 +7,20 @@ import { Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 
-function PollItem({ pollName, voteNumber, linkPath }) {
+function ListItem({ itemName, voteNumber, linkPath }) {
   return (
     <Link to={linkPath} style={{ textDecoration: 'none' }}>
-      <CardActionArea className="poll-item-area">
+      <CardActionArea className="list-item-area">
         <Container>
-          <Row className="poll-item-container" style={{ width: '100%', display: 'felx', alignItems:'center', justifyContent:'center' }}>
+          <Row
+            className="list-item-container"
+            style={{
+              width: '100%', display: 'felx', alignItems: 'center', justifyContent: 'center',
+            }}
+          >
 
             <Typography variant="h6" align="center">
-              {pollName}
+              {itemName}
             </Typography>
 
 
@@ -26,4 +31,4 @@ function PollItem({ pollName, voteNumber, linkPath }) {
   );
 }
 
-export default PollItem;
+export default ListItem;

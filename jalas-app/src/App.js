@@ -19,6 +19,7 @@ import CreatePoll from './scenes/CreatePoll';
 import Poll from './scenes/Poll';
 import Login from './scenes/Login';
 import Reports from './scenes/Reports';
+import Meetings from './scenes/Meetings';
 
 const store = createStore(JalasApp, applyMiddleware(thunk));
 
@@ -34,6 +35,7 @@ function App() {
               <div className="main-page">
                 <Toast />
                 <Route path="/polls" exact component={Polls} />
+                <Route path="/meetings" exact component={Meetings} />
                 <Route path="/createMeeting/:pollID" component={CreateMeeting} />
                 <Route path="/createPoll" component={CreatePoll} />
                 <Route path="/editPoll/:pollID" component={CreatePoll} />

@@ -48,10 +48,12 @@ function Index(props) {
                     نظرسنجی‌ها
                   </Fab>
                 </Link>
-                <Fab variant="extended" color="secondary" className="navbar-button">
-                  <GroupWorkIcon className="navbar-button-icon" />
-                  جلسات
-                </Fab>
+                <Link to="/meetings">
+                  <Fab variant="extended" color="secondary" className="navbar-button">
+                    <GroupWorkIcon className="navbar-button-icon" />
+                    جلسات
+                  </Fab>
+                </Link>
                 {localStorage.getItem('email')
                   ? (
                     <Fab variant="extended" color="secondary" className="navbar-button">

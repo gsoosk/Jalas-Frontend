@@ -1,0 +1,16 @@
+.list-item-container {
+  min-height: 75px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid;
+  border-color: black;
+}
+
+.list-item-area {
+
+}
+
+.list-item-votes {
+  direction: ltr !important;
+  display: flex   ;
+}
