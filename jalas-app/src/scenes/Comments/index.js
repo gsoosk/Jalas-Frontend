@@ -4,10 +4,12 @@ import Container from 'react-bootstrap/Container';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Button, Typography } from '@material-ui/core';
-import { Row } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
 import { toast } from 'react-toastify';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Axios from '../../services/axios';
+
 
 class Comments extends React.Component {
   constructor(props) {
@@ -70,10 +72,13 @@ class Comments extends React.Component {
             </div>
             <Row className="vote_container" style={{ width: '100%' }}>
               <TextField
+                style={{ width: '60%' }}
                 value={text}
                 multiline
                 label="متن نظر"
+                rows="4"
                 onChange={(newText) => { this.setState({ text: newText.target.value }); }}
+                variant="filled"
               />
             </Row>
             <Row className="vote_container" style={{ width: '100%' }}>
@@ -91,17 +96,24 @@ class Comments extends React.Component {
               <Container key={item.date_time}>
                 <Row
                   className="list-item-container"
-                  style={{
-                    width: '100%', display: 'felx', alignItems: 'center', justifyContent: 'center',
-                  }}
                 >
-                  <Typography align="right">
-                    {item.email}
-گفته است:
-                  </Typography>
-                  <Typography align="center">
-                    {item.text}
-                  </Typography>
+                  <Col md={3}>
+                    <Typography align="right">
+                      <span style={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography color="primary" variant="h6">
+                          <AccountCircleIcon fontSize="large" />
+                          {` ${item.email}`}
+                        </Typography>
+                      </span>
+                    </Typography>
+                  </Col>
+                  <Col md={9}>
+                    <Typography color="secondary" variant="body1">
+                      {item.text}
+                    </Typography>
+                  </Col>
+
+
                 </Row>
               </Container>
             ))}
