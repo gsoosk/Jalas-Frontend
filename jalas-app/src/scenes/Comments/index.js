@@ -116,23 +116,21 @@ class Comments extends React.Component {
                 ثبت نظر
               </Button>
             </Row>
-            {comments.map(item => (
+            {comments.map((item, i) => (
               <Container key={item.date_time}>
                 <Row
                     className="list-item-container"
                 > 
-                <Container>
+                <Container key = {i}>
                   <Row>
                     
                     <Col md={3}>
-                      <Typography align="right">
                         <span style={{ display: 'flex', alignItems: 'center' }}>
                           <Typography color="primary" variant="h6">
                             <AccountCircleIcon fontSize="large" />
                             {` ${item.email}`}
                           </Typography>
                         </span>
-                      </Typography>
                     </Col>
                     <Col md={7}>
                       <Typography color="secondary" variant="body1">
@@ -152,6 +150,7 @@ class Comments extends React.Component {
                   <Row>
                     <Col md={12}>
                       <CommentReply
+                        key={i}
                         comment_id={item.id}
                         replies={item.replies}
                       />

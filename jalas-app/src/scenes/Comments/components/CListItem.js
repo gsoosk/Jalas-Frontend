@@ -3,7 +3,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Container from 'react-bootstrap/Container';
 import {Row, Col} from 'react-bootstrap';
 import { Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 
 
 function CListItem({ itemName, voteNumber, linkPath }) {

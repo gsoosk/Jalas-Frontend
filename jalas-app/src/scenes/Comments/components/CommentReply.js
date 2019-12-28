@@ -24,7 +24,6 @@ class CommentReply extends React.Component {
   submitReply(){
     const { text } = this.state;
     console.log(this.props.match)
-    const comment_id = this.state.comment_id;
     const commentReply = {
       comment_id: this.state.comment_id,
       text: text,
@@ -49,7 +48,7 @@ class CommentReply extends React.Component {
     console.log(replies);
     return (
       <Container className="reply-container">
-        {replies.map(item => (<ListItem itemName={ item.email + ':' + item.text} />))}
+        {replies.map((item, i) => (<ListItem key={i} itemName={ item.email + ':' + item.text} />))}
         <Row className="vote_container" style={{ width: '100%' }}>
           <TextField
             style={{ width: '100%', margin: '10px'}}
