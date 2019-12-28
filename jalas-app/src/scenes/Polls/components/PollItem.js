@@ -1,62 +1,65 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import '../styles.scss';
-import { Button } from '@material-ui/core';
+import { Button, Fab } from '@material-ui/core';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import './styles.scss';
+import { Link } from 'react-router-dom';
+import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import EditIcon from '@material-ui/icons/Edit';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import PollIcon from '@material-ui/icons/Poll';
 
 function PollItem({
   pollID, pollTiltle, isCreator, history,
 }) {
   return (
-    <Container className="polls-form-container">
-      <Row>
-        <Col md={3} style={{ display: 'flex', alignItems: 'center' }}>
-          {pollTiltle}
-        </Col>
-        <Col md={3} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Button
-            variant="contained"
-            color="secondary"
-            style={{ margin: '10px' }}
-            onClick={
-                ()=>{history.push('/polls/' + pollID.toString())}
-            }
-            >
-            رای دادن
-            </Button>
-        </Col>
-        
-        {isCreator ? (
-            <Col md={3} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Button
-            variant="contained"
-            color="secondary"
-            style={{ margin: '10px' }}
-            onClick={
-                ()=>{history.push('/editPoll/'+ pollID.toString())}
-            }
-            >
-            ویرایش
-            </Button>
-           
-        </Col>
-        ) : <div /> }
 
-        {isCreator ? (
-          <Col md={3}>
-            <Button
-            variant="contained"
-            color="secondary"
-            style={{ margin: '10px' }}
-            onClick={
-                ()=>{history.push('/createMeeting/'+ pollID.toString())}
-            }
-            >
-            ثبت جلسه
-            </Button>
+    <div className="list-item-container poll-container">
+      <Container style={{ padding: '0' }}>
+        <Row>
+          <Col md={8} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <CardActionArea className="poll-item" onClick={() => { history.push(`/polls/${pollID.toString()}`); }}>
+              <PollIcon style={{ margin: '5px' }} fontSize="large" color="primary" />
+              {pollTiltle}
+            </CardActionArea>
           </Col>
-        ) : <div /> }
-      </Row>
-    </Container>
+
+          <Col md={4}>
+            <span style={{ display: 'flex', flexDirection: 'rowReverse' }}>
+              <Link to={`/comments/${pollID.toString()}`} className="poll-btn">
+                <Fab variant="extended">
+                  <ChatBubbleOutlineIcon style={{ margin: '2px' }} />
+                نظرات
+                </Fab>
+              </Link>
+              {
+                isCreator ? (
+                  <div>
+                    <Link to={`/editPoll/${pollID.toString()}`} className="poll-btn">
+                      <Fab variant="extended">
+                        <EditIcon style={{ margin: '2px' }} />
+                        ویرایش
+                      </Fab>
+                    </Link>
+                    <Link to={`/createMeeting/${pollID.toString()}`} className="poll-btn">
+                      <Fab variant="extended">
+                        <CheckCircleIcon style={{ margin: '2px' }} />
+                        ثبت جلسه
+                      </Fab>
+                    </Link>
+                  </div>
+                )
+                  : <div />
+              }
+            </span>
+
+          </Col>
+
+        </Row>
+      </Container>
+
+    </div>
   );
 }
 

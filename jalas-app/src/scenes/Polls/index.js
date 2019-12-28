@@ -4,12 +4,12 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { connect } from 'react-redux';
 import { Fab, Typography } from '@material-ui/core';
-import { savePoll } from './services/actions/savePollActions';
-import Axios from '../../services/axios';
 import './styles.scss';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Link } from 'react-router-dom';
 import { Row } from 'react-bootstrap';
+import Axios from '../../services/axios';
+import { savePoll } from './services/actions/savePollActions';
 import PollItem from './components/PollItem';
 
 class Polls extends React.Component {
@@ -28,16 +28,16 @@ class Polls extends React.Component {
     const { savePolls } = this.props;
     Axios.get('/polls')
       .then((response) => {
-        this.setState({ polls: response.data.polls , user: response.data.user_id});
+        this.setState({ polls: response.data.polls, user: response.data.user_id });
         savePolls(response.data.polls);
       })
       .catch((error) => {
         console.log(error);
       });
   }
-  
+
   render() {
-    const { polls , user} = this.state;
+    const { polls, user } = this.state;
     return (
       <Container>
         <Card>
@@ -54,14 +54,14 @@ class Polls extends React.Component {
               </Link>
             </div>
             {polls.map(item => (
-            <Row>
-                  <PollItem
-                    pollID={item.poll_id}
-                    pollTiltle={item.title}
-                    isCreator={item.creator_id === user}
-                    history={this.props.history}
-                  /> 
-            </Row>
+              <Row>
+                <PollItem
+                  pollID={item.poll_id}
+                  pollTiltle={item.title}
+                  isCreator={item.creator_id === user}
+                  history={this.props.history}
+                />
+              </Row>
             ))}
             <Typography variant="body2" align="center" color="textSecondary" style={{ paddingTop: '10px' }}>
             برای ایجاد جلسه‌ی جدید یکی از نظرسنجی‌های بالا را انتخاب کنید.
