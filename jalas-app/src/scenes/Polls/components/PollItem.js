@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import '../styles.scss';
-import { Button, Fab } from '@material-ui/core';
+import { Fab } from '@material-ui/core';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import './styles.scss';
 import { Link } from 'react-router-dom';
