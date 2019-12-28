@@ -3,12 +3,15 @@ import './styles.scss';
 import Container from 'react-bootstrap/Container';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Button, Typography } from '@material-ui/core';
+import { Fab, Button, Typography } from '@material-ui/core';
 import { Row, Col } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
 import { toast } from 'react-toastify';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Axios from '../../services/axios';
+import CommentReply from'./components/CommentReply';
+import RemoveIcon from '@material-ui/icons/Remove';
+
 
 
 class Comments extends React.Component {
@@ -19,6 +22,7 @@ class Comments extends React.Component {
       comments: [],
     };
     this.submit = this.submit.bind(this);
+    this.deleteComment = this.deleteComment.bind(this);
   }
 
   componentDidMount() {
@@ -55,12 +59,32 @@ class Comments extends React.Component {
           toast.error(<div>خطایی رخ داده است.</div>);
         }
       });
-  }
+    }
+
+    deleteComment(comment_id) {
+      const comment = {
+        comment_id: comment_id
+      };
+      Axios.post('polls/remove_comment', comment)
+        .then((response) => {
+          toast.success(<div>نظر شما با موفقیت حذف شد.</div>);
+          // this.props.history.push(`/comments/${comment.poll_id}`);
+          this.setState({ text: '' });
+          window.location.reload();
+        })
+        .catch((error) => {
+          if (error.response) {
+            toast.error(<div>{error.response.data.message}</div>);
+          } else {
+            toast.error(<div>خطایی رخ داده است.</div>);
+          }
+        });
+      }
 
   render() {
     const { comments } = this.state;
     const { text } = this.state;
-    console.log(comments);
+    // console.log("$$$$$$" + localStorage.getItem('email'));
     return (
       <Container>
         <Card>
@@ -92,29 +116,48 @@ class Comments extends React.Component {
                 ثبت نظر
               </Button>
             </Row>
-            {comments.map(item => (
+            {comments.map((item, i) => (
               <Container key={item.date_time}>
                 <Row
-                  className="list-item-container"
-                >
-                  <Col md={3}>
-                    <Typography align="right">
-                      <span style={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography color="primary" variant="h6">
-                          <AccountCircleIcon fontSize="large" />
-                          {` ${item.email}`}
-                        </Typography>
-                      </span>
-                    </Typography>
-                  </Col>
-                  <Col md={9}>
-                    <Typography color="secondary" variant="body1">
-                      {item.text}
-                    </Typography>
-                  </Col>
+                    className="list-item-container"
+                > 
+                <Container key = {i}>
+                  <Row>
+                    
+                    <Col md={3}>
+                        <span style={{ display: 'flex', alignItems: 'center' }}>
+                          <Typography color="primary" variant="h6">
+                            <AccountCircleIcon fontSize="large" />
+                            {` ${item.email}`}
+                          </Typography>
+                        </span>
+                    </Col>
+                    <Col md={7}>
+                      <Typography color="secondary" variant="body1">
+                        {item.text}
+                      </Typography>
+                    </Col>
+                    {(item.email === localStorage.getItem('email')) ? (
+                      <Col md={2}>
+                      <Fab color="secondary" aria-label="add" size="small" onClick={()=>{this.deleteComment(item.id)}}>
+                        <RemoveIcon />
+                      </Fab>
+                      </Col>
+                     ) : <div /> }
+                    
 
-
-                </Row>
+                  </Row>
+                  <Row>
+                    <Col md={12}>
+                      <CommentReply
+                        key={i}
+                        comment_id={item.id}
+                        replies={item.replies}
+                      />
+                    </Col>
+                  </Row>
+                  </Container>
+                </Row> 
               </Container>
             ))}
           </CardContent>

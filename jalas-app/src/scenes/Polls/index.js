@@ -4,12 +4,12 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { connect } from 'react-redux';
 import { Fab, Typography } from '@material-ui/core';
+import { savePoll } from './services/actions/savePollActions';
+import Axios from '../../services/axios';
 import './styles.scss';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Link } from 'react-router-dom';
 import { Row } from 'react-bootstrap';
-import Axios from '../../services/axios';
-import { savePoll } from './services/actions/savePollActions';
 import PollItem from './components/PollItem';
 
 class Polls extends React.Component {
@@ -19,9 +19,6 @@ class Polls extends React.Component {
       polls: [],
       user: -1,
     };
-    // this.handleVote = this.handleVote.bind(this);
-    // this.handleEdit = this.handleEdit.bind(this);
-    // this.handleCreateMeeting = this.handleCreateMeeting.bind(this);
   }
 
   componentDidMount() {
