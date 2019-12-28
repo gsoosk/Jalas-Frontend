@@ -17,6 +17,10 @@ import CreateMeeting from './scenes/CreateMeeting';
 import MeetingInfo from './scenes/MeetingInfo';
 import CreatePoll from './scenes/CreatePoll';
 import Poll from './scenes/Poll';
+import Login from './scenes/Login';
+import Reports from './scenes/Reports';
+import Meetings from './scenes/Meetings';
+import Comments from './scenes/Comments';
 
 const store = createStore(JalasApp, applyMiddleware(thunk));
 
@@ -28,14 +32,19 @@ function App() {
         <Provider store={store}>
           <MuiThemeProvider theme={theme}>
             <div dir="rtl">
-              <Navbar />
+              <Route path="/*" exact component={Navbar} />
               <div className="main-page">
                 <Toast />
                 <Route path="/polls" exact component={Polls} />
+                <Route path="/meetings" exact component={Meetings} />
                 <Route path="/createMeeting/:pollID" component={CreateMeeting} />
                 <Route path="/createPoll" component={CreatePoll} />
-                <Route path="/polls/:pollID" component={Poll}/>
+                <Route path="/editPoll/:pollID" component={CreatePoll} />
+                <Route path="/polls/:pollID" component={Poll} />
                 <Route path="/meetings/:meetingID" component={MeetingInfo} />
+                <Route path="/login" component={Login} />
+                <Route path="/reports" component={Reports} />
+                <Route path="/comments/:pollID" component={Comments} />
               </div>
             </div>
           </MuiThemeProvider>

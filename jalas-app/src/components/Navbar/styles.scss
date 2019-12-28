@@ -10,6 +10,13 @@
 
 .navbar-button {
   margin: 5px !important;
+  text-transform: none !important;
+}
+.navbar-button-exit {
+  margin: 5px !important;
+  position: absolute !important;
+  right: 0;
+
 }
 
 .navbar-button-icon {

@@ -4,7 +4,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Typography, LinearProgress } from '@material-ui/core';
 import './styles.scss';
-import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import Axios from '../../services/axios';
 import Times from './scenes/Times';
@@ -14,17 +13,14 @@ import Finish from './scenes/Finish';
 class CreateMeeting extends React.Component {
   constructor(props) {
     super(props);
-    const pollID = props.match.params.pollID;
-    const poll = props.polls.find ? props.polls.find(o => o.id === parseInt(pollID)) : undefined;
     this.state = {
       flow: 'times',
       time: {},
       times: [],
       rooms: {},
       room: {},
-      title: poll ? poll.title : 'جلسه',
+      title: 'جلسه',
       meeting: {},
-      poll,
       reserved: false,
       meeting_id: -1,
       canceling: false,
@@ -42,7 +38,11 @@ class CreateMeeting extends React.Component {
     Axios.get(`/polls/${pollID}`)
       .then((response) => {
         console.log(response);
-        this.setState({ times: response.data.choices, participants: response.data.participants });
+        this.setState({
+          times: response.data.choices,
+          participants: response.data.participants,
+          title: response.data.title,
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -178,8 +178,5 @@ class CreateMeeting extends React.Component {
   }
 }
 
-const mapStateToProps = store => ({
-  polls: store.savePollReducer.polls,
-});
 
-export default connect(mapStateToProps, null)(CreateMeeting);
+export default CreateMeeting;

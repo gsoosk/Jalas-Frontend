@@ -1,0 +1,21 @@
+.list-item-container {
+  min-height: 75px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid;
+  border-color: black;
+}
+
+.poll-btn {
+  margin-left: 6px;
+  text-decoration: none;
+}
+
+.list-item-area {
+
+}
+
+.list-item-votes {
+  direction: ltr !important;
+  display: flex   ;
+}

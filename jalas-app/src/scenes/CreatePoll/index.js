@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import AddPollTime from './components/AddPollTime';
 import AddParticipants from './components/AddParticipants';
 import Axios from '../../services/axios';
-import { defaultUser } from '../../services/axios/config';
 
 class CreatePoll extends React.Component {
   constructor(props) {
@@ -21,12 +20,39 @@ class CreatePoll extends React.Component {
       email: '',
       title: '',
     };
-    this.state = this.initState;
+    this.state = { ...this.initState, componentState: '' };
     this.addTime = this.addTime.bind(this);
     this.deleteTime = this.deleteTime.bind(this);
     this.addParticipant = this.addParticipant.bind(this);
     this.deleteParticipant = this.deleteParticipant.bind(this);
     this.submit = this.submit.bind(this);
+    this.createPoll = this.createPoll.bind(this);
+    this.updatePoll = this.updatePoll.bind(this);
+  }
+
+  componentDidMount() {
+    const { match } = this.props;
+    if (match.params.pollID) {
+      this.setState({ componentState: 'update' });
+      Axios.get(`polls/create/${match.params.pollID}`)
+        .then((response) => {
+          const poll = response.data;
+          this.setState({
+            times: poll.choices,
+            title: poll.title,
+            participants: poll.participants,
+          });
+        })
+        .catch((error) => {
+          if (error.response) {
+            toast.error(<div>{JSON.stringify(error.response.data)}</div>);
+          } else {
+            toast.error(<div>خطایی رخ داده است.</div>);
+          }
+        });
+    } else {
+      this.setState({ componentState: 'create' });
+    }
   }
 
   addTime() {
@@ -54,9 +80,7 @@ class CreatePoll extends React.Component {
 
   addParticipant() {
     const { email } = this.state;
-    const newParticipant = {
-      email,
-    };
+    const newParticipant = email;
     this.setState(prev => ({
       participants: prev.participants.concat(newParticipant),
       email: '',
@@ -73,14 +97,7 @@ class CreatePoll extends React.Component {
     });
   }
 
-  submit() {
-    const { title, times, participants } = this.state;
-    const poll = {
-      title,
-      creator_id: defaultUser,
-      choices: times,
-      participants,
-    };
+  createPoll(poll) {
     Axios.post('polls/create/', poll)
       .then((response) => {
         console.log(response.data);
@@ -88,25 +105,58 @@ class CreatePoll extends React.Component {
         toast.success(<div>نظرسنجی با موفقیت ایجاد شد.</div>);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         if (error.response) {
-          toast.error(<div>{error.response.data}</div>);
+          toast.error(<div>{JSON.stringify(error.response.data)}</div>);
         } else {
           toast.error(<div>خطایی رخ داده است.</div>);
         }
       });
   }
 
+  updatePoll(poll) {
+    const { match, history } = this.props;
+    if (match.params.pollID) {
+      Axios.put(`polls/create/${match.params.pollID}/`, poll)
+        .then((response) => {
+          console.log(response.data);
+          toast.success(<div>نظرسنجی با موفقیت تفییر یافت.</div>);
+          history.push('/polls');
+        })
+        .catch((error) => {
+          console.log(error.response);
+          if (error.response) {
+            toast.error(<div>{JSON.stringify(error.response.data)}</div>);
+          } else {
+            toast.error(<div>خطایی رخ داده است.</div>);
+          }
+        });
+    }
+  }
+
+  submit() {
+    const {
+      title, times, participants, componentState,
+    } = this.state;
+    const poll = {
+      title,
+      choices: times,
+      participants,
+    };
+    if (componentState === 'create') this.createPoll(poll);
+    else this.updatePoll(poll);
+  }
+
   render() {
     const {
-      times, start, end, participants, email, title,
+      times, start, end, participants, email, title, componentState,
     } = this.state;
     return (
       <Container>
         <Card>
           <CardContent>
             <Typography variant="h3" align="center" gutterBottom>
-                  ایجاد یک نظرسنجی جدید
+              {componentState === 'create' ? 'ایجاد یک نظرسنجی جدید' : 'تغییر یک نظرسنجی'}
             </Typography>
             <Container>
               <form autoComplete="off" noValidate>

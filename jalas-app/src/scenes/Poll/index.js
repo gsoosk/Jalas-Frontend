@@ -2,12 +2,13 @@ import React from 'react';
 import { Row, Container } from 'react-bootstrap';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Typography, Button } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import Axios from '../../services/axios';
-import PollChoiceItems from './scenes/PollChoiceItems';
+import { Typography, Button, Fab } from '@material-ui/core';
 import './styles.scss';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import PollChoiceItems from './scenes/PollChoiceItems';
+import Axios from '../../services/axios';
 
 class Poll extends React.Component {
   constructor(props) {
@@ -16,7 +17,6 @@ class Poll extends React.Component {
       times: [],
       title: '',
       votes: {},
-      voterName: '',
     };
     this.submit = this.submit.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -48,9 +48,8 @@ class Poll extends React.Component {
   }
 
   submit() {
-    const { voterName, votes } = this.state;
+    const { votes } = this.state;
     const vote = {
-      voterName,
       pollID: this.props.match.params.pollID,
       votes,
     };
@@ -62,7 +61,6 @@ class Poll extends React.Component {
       })
       .catch((error) => {
         if (error.response) {
-          console.log('hhhhhh', error.response);
           toast.error(<div>{error.response.data.message}</div>);
         } else {
           toast.error(<div>خطایی رخ داده است.</div>);
@@ -73,38 +71,45 @@ class Poll extends React.Component {
 
   render() {
     const {
-      times, title, voterName,
+      times, title,
     } = this.state;
+    const pollID = this.props.match.params.pollID;
     return (
       <Container>
         <Card>
           <CardContent>
-            <Typography variant="h3" align="center" gutterBottom>
-                    شرکت در نظرسنجی جلسه برای
-              {` ${title} `}
-            </Typography>
+            <div className="poll-header">
+              <Typography variant="h3" align="center" gutterBottom>
+                شرکت در نظرسنجی جلسه
+                {` ${title} `}
+              </Typography>
+              <Link to={`/comments/` + pollID}>
+                <Fab variant="extended" color="primary" className="comment-button">
+                  <ChatBubbleOutlineIcon className="navbar-button-icon" />
+                  نظرات
+                </Fab>
+              </Link>
+            </div>
             <PollChoiceItems choices={times} handleOptionChange={this.handleOptionChange} />
             <Row className="vote_container" style={{ width: '100%' }}>
-              <TextField
+            {/* <TextField
                 value={voterName}
                 id="voter_name"
                 label="ایمیل رای دهنده"
                 className="vote_voter_name"
                 onChange={(newName) => { this.setState({ voterName: newName.target.value }); }}
-              />
-            </Row>
+            /> */}
+          </Row>
             <Row className="vote_container" style={{ width: '100%' }}>
               <Button
                 variant="contained"
                 color="secondary"
                 style={{ margin: '30px' }}
-                disabled={!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(voterName) || !voterName}
                 onClick={this.submit}
               >
                     ثبت رای
               </Button>
             </Row>
-
           </CardContent>
         </Card>
       </Container>
