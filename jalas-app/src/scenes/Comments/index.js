@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import { toast } from 'react-toastify';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Axios from '../../services/axios';
+import CommentReply from'./components/CommentReply';
 
 
 class Comments extends React.Component {
@@ -61,6 +62,7 @@ class Comments extends React.Component {
     const { comments } = this.state;
     const { text } = this.state;
     console.log(comments);
+    console.log("$$$$$$" + localStorage.getItem('email'));
     return (
       <Container>
         <Card>
@@ -95,26 +97,38 @@ class Comments extends React.Component {
             {comments.map(item => (
               <Container key={item.date_time}>
                 <Row
-                  className="list-item-container"
-                >
-                  <Col md={3}>
-                    <Typography align="right">
-                      <span style={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography color="primary" variant="h6">
-                          <AccountCircleIcon fontSize="large" />
-                          {` ${item.email}`}
-                        </Typography>
-                      </span>
-                    </Typography>
-                  </Col>
-                  <Col md={9}>
-                    <Typography color="secondary" variant="body1">
-                      {item.text}
-                    </Typography>
-                  </Col>
+                    className="list-item-container"
+                > 
+                <Container>
+                  <Row>
+                    
+                    <Col md={3}>
+                      <Typography align="right">
+                        <span style={{ display: 'flex', alignItems: 'center' }}>
+                          <Typography color="primary" variant="h6">
+                            <AccountCircleIcon fontSize="large" />
+                            {` ${item.email}`}
+                          </Typography>
+                        </span>
+                      </Typography>
+                    </Col>
+                    <Col md={9}>
+                      <Typography color="secondary" variant="body1">
+                        {item.text}
+                      </Typography>
+                    </Col>
 
 
-                </Row>
+                  </Row>
+                  <Row>
+                    <Col md={12}>
+                      <CommentReply
+                        comment_id={item.id}
+                      />
+                    </Col>
+                  </Row>
+                  </Container>
+                </Row> 
               </Container>
             ))}
           </CardContent>
