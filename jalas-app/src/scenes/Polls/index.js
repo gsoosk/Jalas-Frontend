@@ -5,7 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { connect } from 'react-redux';
 import { Fab, Typography } from '@material-ui/core';
 import { savePoll } from './services/actions/savePollActions';
-import ListItem from '../../components/ListItem/index';
+import ListItem from '../../components/ListItem/index.js';
 import Axios from '../../services/axios';
 import './styles.scss';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';

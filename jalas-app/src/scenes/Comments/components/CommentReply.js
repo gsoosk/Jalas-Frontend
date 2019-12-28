@@ -3,18 +3,19 @@ import { Row } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { Button} from '@material-ui/core';
 import '../styles.scss';
-import RemoveIcon from '@material-ui/icons/Remove';
 import TextField from '@material-ui/core/TextField';
 import Axios from '../../../services/axios';
 import { toast } from 'react-toastify';
-
+import ListItem from './CListItem.js';
 
 
 class CommentReply extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text:'', 
+      text:'',
+      comment_id: this.props.comment_id,
+      replies: this.props.replies,
     };
     this.submitReply = this.submitReply.bind(this);
   }
@@ -22,12 +23,13 @@ class CommentReply extends React.Component {
 
   submitReply(){
     const { text } = this.state;
-    const comment_id = this.props.match.params.comment_id;
+    console.log(this.props.match)
+    const comment_id = this.state.comment_id;
     const commentReply = {
-      comment_id: comment_id,
+      comment_id: this.state.comment_id,
       text: text,
     };
-    Axios.post('polls/reply_comment' + comment_id.toString() , commentReply)
+    Axios.post('polls/reply_comment' , commentReply)
       .then((response) => {
         toast.success(<div>نظر شما با موفقیت ثبت شد.</div>);
         window.location.reload();
@@ -42,11 +44,12 @@ class CommentReply extends React.Component {
   }
 
   render() {
-    const { comments } = this.state;
+    const { replies } = this.state;
     const { text } = this.state;
-    console.log(comments);
+    console.log(replies);
     return (
       <Container className="reply-container">
+        {replies.map(item => (<ListItem itemName={ item.email + ':' + item.text} />))}
         <Row className="vote_container" style={{ width: '100%' }}>
           <TextField
             style={{ width: '100%', margin: '10px'}}
@@ -71,7 +74,6 @@ class CommentReply extends React.Component {
     );
   }
 }
-
 
 
 export default CommentReply;
