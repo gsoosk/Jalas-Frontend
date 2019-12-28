@@ -10,6 +10,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^4.4.1",
     "date-fns": "^2.0.0-beta.5",
+    "jquery": "^1.9.1",
     "luxon": "^1.21.3",
     "node-sass": "^4.11.0",
     "prop-types": "^15.7.2",
@@ -24,7 +25,8 @@
     "react-toastify": "^5.0.0-rc.6",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "tar": "^5.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -46,6 +48,6 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4"
+    "eslint-plugin-react": "^7.17.0"
   }
 }

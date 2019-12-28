@@ -3,7 +3,6 @@ import { Row, Container } from 'react-bootstrap';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Typography, Button, Fab } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
 import './styles.scss';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -18,7 +17,6 @@ class Poll extends React.Component {
       times: [],
       title: '',
       votes: {},
-      voterName: '',
     };
     this.submit = this.submit.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -50,9 +48,8 @@ class Poll extends React.Component {
   }
 
   submit() {
-    const { voterName, votes } = this.state;
+    const { votes } = this.state;
     const vote = {
-      voterName,
       pollID: this.props.match.params.pollID,
       votes,
     };
@@ -74,7 +71,7 @@ class Poll extends React.Component {
 
   render() {
     const {
-      times, title, voterName,
+      times, title,
     } = this.state;
     const pollID = this.props.match.params.pollID;
     return (
@@ -95,20 +92,19 @@ class Poll extends React.Component {
             </div>
             <PollChoiceItems choices={times} handleOptionChange={this.handleOptionChange} />
             <Row className="vote_container" style={{ width: '100%' }}>
-            <TextField
+            {/* <TextField
                 value={voterName}
                 id="voter_name"
                 label="ایمیل رای دهنده"
                 className="vote_voter_name"
                 onChange={(newName) => { this.setState({ voterName: newName.target.value }); }}
-            />
+            /> */}
           </Row>
             <Row className="vote_container" style={{ width: '100%' }}>
               <Button
                 variant="contained"
                 color="secondary"
                 style={{ margin: '30px' }}
-                disabled={!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(voterName) || !voterName}
                 onClick={this.submit}
               >
                     ثبت رای
