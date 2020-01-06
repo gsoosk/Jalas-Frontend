@@ -9,6 +9,7 @@ import { Typography } from '@material-ui/core';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
+import { toast } from 'react-toastify';
 import Axios from '../../services/axios';
 
 class MeetingInfo extends React.Component {
@@ -16,21 +17,23 @@ class MeetingInfo extends React.Component {
     super(props);
     console.log(props);
     this.state = {
-      meeting: [],
-      room: [],
+      meeting: '',
+      room: '',
     };
   }
 
   componentDidMount() {
     const id = this.props.match.params.meetingID;
-    Axios.get(`/meetings/${id}`)
+    Axios.get(`/meetings/${id}`, { timeout: 6000 })
       .then((response) => {
         console.log(response.data);
-        console.log('success\n')
+        console.log('success\n');
         this.setState({ meeting: response.data, room: response.data.room });
       })
       .catch((error) => {
+        toast.error(<div>{error.response.data.message}</div>);
         console.log(error);
+        this.props.history.push('/');
       });
   }
 
@@ -39,8 +42,8 @@ class MeetingInfo extends React.Component {
       meeting,
       room,
     } = this.state;
-    const getDate = time => time ? time.substr(0, 10) : '';
-    const getHour = time => time ? time.substr(11, 5) : '';
+    const getDate = time => (time ? time.substr(0, 10) : '');
+    const getHour = time => (time ? time.substr(11, 5) : '');
     return (
       <Container>
         <Container>

@@ -35,7 +35,8 @@ class Poll extends React.Component {
         });
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(<div>{error.response.data.message}</div>);
+        this.props.history.push('/');
       });
   }
 
