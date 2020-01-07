@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import { Col, Row } from 'react-bootstrap';
 import HistoryIcon from '@material-ui/core/SvgIcon/SvgIcon';
 import UpdateIcon from '@material-ui/icons/Update';
-import { Typography } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
@@ -20,6 +20,7 @@ class MeetingInfo extends React.Component {
       meeting: '',
       room: '',
     };
+    this.cancelMeeting = this.cancelMeeting.bind(this);
   }
 
   componentDidMount() {
@@ -34,6 +35,21 @@ class MeetingInfo extends React.Component {
         toast.error(<div>{error.response.data.message}</div>);
         console.log(error);
         this.props.history.push('/');
+      });
+  }
+
+  cancelMeeting() {
+    const id = this.props.match.params.meetingID;
+    Axios.post('meetings/cancel', { meeting_id: id, after_creation: true })
+      .then((response) => {
+        console.log(response.data);
+        toast.success(<div>جلسه با موفقیت کنسل شد </div>);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(id);
+        console.log(error);
+        toast.error(<div>{error.response.data.message}</div>);
       });
   }
 
@@ -77,17 +93,51 @@ class MeetingInfo extends React.Component {
                   </Typography>
                 </Col>
               </Row>
-              <Row style={{
-                minHeight: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center',
-              }}
-              >
-                <Typography variant="body1" align="center" gutterBottom>
-                  <MeetingRoomIcon />
-                                      این جلسه در اتاق
-                  {` ${room.room_name} `}
-                                      برگزار خواهد شد.
-                </Typography>
-              </Row>
+              {
+                !meeting.is_cancelled ? (
+                  <div>
+                    <Row style={{
+                      minHeight: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+                    }}
+                    >
+                      <Typography variant="body1" align="center" gutterBottom>
+                        <MeetingRoomIcon />
+                          این جلسه در اتاق
+                        {` ${room.room_name} `}
+                          برگزار خواهد شد.
+                      </Typography>
+                    </Row>
+                    {meeting !== '' && localStorage.getItem('email') === meeting.creator.email
+                      ? (
+                        <Row style={{
+                          minHeight: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+                        }}
+                        >
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            style={{ marginTop: '10px', marginBottom: '20px' }}
+                            onClick={() => { this.cancelMeeting(); }}
+                          >
+                                  لغو جلسه
+                          </Button>
+                        </Row>
+                      ) : <div />
+                      }
+                  </div>
+                )
+                  : (
+                    <Row style={{
+                      minHeight: '75px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+                    }}
+                    >
+                      <Typography variant="body1" align="center" gutterBottom>
+                        <MeetingRoomIcon />
+                    این جلسه لغو شده است.
+                      </Typography>
+                    </Row>
+                  )
+              }
 
 
             </Card>
