@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import EditIcon from '@material-ui/icons/Edit';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
 import PollIcon from '@material-ui/icons/Poll';
 
 function PollItem({
@@ -18,14 +19,14 @@ function PollItem({
     <div className="list-item-container poll-container">
       <Container style={{ padding: '0' }}>
         <Row>
-          <Col md={8} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Col md={6} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <CardActionArea className="poll-item" onClick={() => { history.push(`/polls/${pollID.toString()}`); }}>
               <PollIcon style={{ margin: '5px' }} fontSize="large" color="primary" />
               {pollTiltle}
             </CardActionArea>
           </Col>
 
-          <Col md={4}>
+          <Col md={6}>
             <span style={{ display: 'flex', flexDirection: 'rowReverse' }}>
               <Link to={`/comments/${pollID.toString()}`} className="poll-btn">
                 <Fab variant="extended">
@@ -40,6 +41,12 @@ function PollItem({
                       <Fab variant="extended">
                         <EditIcon style={{ margin: '2px' }} />
                         ویرایش
+                      </Fab>
+                    </Link>
+                    <Link to="/polls" className="poll-btn">
+                      <Fab variant="extended">
+                        <CancelIcon style={{ margin: '2px' }} />
+                        بستن نظرسنجی
                       </Fab>
                     </Link>
                     <Link to={`/createMeeting/${pollID.toString()}`} className="poll-btn">
