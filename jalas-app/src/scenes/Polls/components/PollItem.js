@@ -10,64 +10,96 @@ import EditIcon from '@material-ui/icons/Edit';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import PollIcon from '@material-ui/icons/Poll';
+import { toast } from 'react-toastify';
+import Axios from '../../../services/axios';
 
-function PollItem({
-  pollID, pollTiltle, isCreator, history,
-}) {
-  return (
+class PollItem extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-    <div className="list-item-container poll-container">
-      <Container style={{ padding: '0' }}>
-        <Row>
-          <Col md={6} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <CardActionArea className="poll-item" onClick={() => { history.push(`/polls/${pollID.toString()}`); }}>
-              <PollIcon style={{ margin: '5px' }} fontSize="large" color="primary" />
-              {pollTiltle}
-            </CardActionArea>
-          </Col>
+  closePoll() {
+    const {
+      pollID,
+    } = this.props;
+    Axios.post('polls/close', { poll_id: pollID })
+      .then((response) => {
+        toast.success(<div>نظرسنجی با موفقیت بسته شد.</div>);
+        window.location.reload();
+      })
+      .catch((error) => {
+        if (error.response) {
+          toast.error(<div>{error.response.data.message}</div>);
+        } else {
+          toast.error(<div>خطایی رخ داده است.</div>);
+        }
+      });
+  }
 
-          <Col md={6}>
-            <span style={{ display: 'flex', flexDirection: 'rowReverse' }}>
-              <Link to={`/comments/${pollID.toString()}`} className="poll-btn">
-                <Fab variant="extended">
-                  <ChatBubbleOutlineIcon style={{ margin: '2px' }} />
+  render() {
+    const {
+      pollID, pollTiltle, isCreator, history,
+    } = this.props;
+    return (
+
+      <div className="list-item-container poll-container">
+        <Container style={{ padding: '0' }}>
+          <Row>
+            <Col md={6} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <CardActionArea
+                className="poll-item"
+                onClick={() => {
+                  history.push(`/polls/${pollID.toString()}`);
+                }}
+              >
+                <PollIcon style={{ margin: '5px' }} fontSize="large" color="primary" />
+                {pollTiltle}
+              </CardActionArea>
+            </Col>
+
+            <Col md={6}>
+              <span style={{ display: 'flex', flexDirection: 'rowReverse' }}>
+                <Link to={`/comments/${pollID.toString()}`} className="poll-btn">
+                  <Fab variant="extended">
+                    <ChatBubbleOutlineIcon style={{ margin: '2px' }} />
                 نظرات
-                </Fab>
-              </Link>
-              {
+                  </Fab>
+                </Link>
+                {
                 isCreator ? (
                   <div>
                     <Link to={`/editPoll/${pollID.toString()}`} className="poll-btn">
                       <Fab variant="extended">
                         <EditIcon style={{ margin: '2px' }} />
-                        ویرایش
+                              ویرایش
                       </Fab>
                     </Link>
-                    <Link to="/polls" className="poll-btn">
+                    <span className="poll-btn" onClick={() => { this.closePoll(); }}>
                       <Fab variant="extended">
                         <CancelIcon style={{ margin: '2px' }} />
-                        بستن نظرسنجی
+                              بستن نظرسنجی
                       </Fab>
-                    </Link>
+                    </span>
                     <Link to={`/createMeeting/${pollID.toString()}`} className="poll-btn">
                       <Fab variant="extended">
                         <CheckCircleIcon style={{ margin: '2px' }} />
-                        ثبت جلسه
+                              ثبت جلسه
                       </Fab>
                     </Link>
                   </div>
                 )
                   : <div />
               }
-            </span>
+              </span>
 
-          </Col>
+            </Col>
 
-        </Row>
-      </Container>
+          </Row>
+        </Container>
 
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default PollItem;
