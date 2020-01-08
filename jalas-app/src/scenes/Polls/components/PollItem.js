@@ -14,10 +14,6 @@ import { toast } from 'react-toastify';
 import Axios from '../../../services/axios';
 
 class PollItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   closePoll() {
     const {
       pollID,
