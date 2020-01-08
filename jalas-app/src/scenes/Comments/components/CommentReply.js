@@ -28,7 +28,7 @@ class CommentReply extends React.Component {
       comment_id: this.state.comment_id,
       text: text,
     };
-    Axios.post('polls/reply_comment' , commentReply)
+    Axios.post('polls/reply_comment', commentReply)
       .then((response) => {
         toast.success(<div>نظر شما با موفقیت ثبت شد.</div>);
         window.location.reload();
