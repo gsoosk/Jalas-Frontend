@@ -40,6 +40,7 @@ class PollItem extends React.Component {
     const {
       pollID, pollTiltle, isCreator, history,
     } = this.props;
+
     return (
 
       <div className="list-item-container poll-container">
