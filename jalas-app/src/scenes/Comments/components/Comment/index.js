@@ -55,8 +55,19 @@ class Comment extends React.Component {
   }
 
   updateComment() {
-
+    const { comment } = this.props;
+    const { text } = this.state;
+    Axios.put(`/polls/update_comment/${comment.id}/`, { text })
+      .then((response) => {
+        this.setState({ editing: false });
+      })
+      .catch((error) => {
+        console.log(error);
+        error.response ? toast.error(<div>{error.response.data.toString()}</div>)
+          : toast.error(<div>{error.toString()}</div>);
+      });
   }
+
   render() {
     const {
       replies, replying, editing, text,
@@ -96,7 +107,7 @@ class Comment extends React.Component {
                             </IconButton>
                           )
                           : (
-                            <IconButton color="primary" onClick={() => { this.setState({ editing: true }); }}>
+                            <IconButton color="primary" onClick={this.updateComment}>
                               <SendIcon />
                             </IconButton>
                           ) : <div />}
@@ -104,7 +115,7 @@ class Comment extends React.Component {
                       <Col md={11}>
                         <div>
                           <Typography color="secondary" variant="body1">
-                            {!editing ? comment.text
+                            {!editing ? text
                               : (
                                 <TextField
                                   style={{ width: '100%', marginBottom: '10px' }}
