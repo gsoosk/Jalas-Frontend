@@ -12,7 +12,7 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { Link } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-
+import ReportIcon from '@material-ui/icons/Report';
 
 function Index(props) {
   console.log(props);
@@ -74,6 +74,17 @@ function Index(props) {
                       </Fab>
                     </Link>
                   )}
+                {localStorage.getItem('is_admin') === 'true' && localStorage.getItem('email')
+                  ? (
+                    <Link to="/reports">
+                      <Fab variant="extended" color="secondary" className="navbar-button">
+                        <ReportIcon className="navbar-button-icon" />
+                      گزارش‌ها
+                      </Fab>
+                    </Link>
+                  )
+                  : <div />
+                }
 
               </Col>
             </Row>
