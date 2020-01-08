@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { CardActionArea } from '@material-ui/core';
 import './styles.scss';
 import ScheduleIcon from '@material-ui/icons/Schedule';
-import { Check, Clear } from '@material-ui/icons';
+import { Check, Clear, DoneOutline } from '@material-ui/icons';
 
 
 function Times({ polls, click }) {
@@ -55,6 +55,13 @@ function Times({ polls, click }) {
                         {item.negative_voters.length}
                       </span>
                       رای مخالف
+                    </Row>
+                    <Row>
+                      <DoneOutline style={{ marginLeft: '10px' }} />
+                      <span style={{ marginLeft: '2px' }}>
+                        {item.agree_ifneeded_voters.length}
+                      </span>
+                      رای در صورت لزوم موافق
                     </Row>
                   </Col>
                 </Row>
