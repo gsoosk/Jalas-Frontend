@@ -50,8 +50,6 @@ function PollChoiceItems({ choices, handleOptionChange, closed }) {
                 <RadioGroup aria-label="choice" onChange={(e) => { handleOptionChange(item.id, e.target.value); }} name="customized-radios">
                   <FormControlLabel value="agree" control={<StyledRadio />} label="موافق" disabled={closed} />
                   <FormControlLabel value="disagree" control={<StyledRadio />} label="مخالف" disabled={closed} />
-                  {console.log(closed)}
-                  {console.log('HHHEEELLLLO')}
                 </RadioGroup>
               </Card.Text>
             </Card>
