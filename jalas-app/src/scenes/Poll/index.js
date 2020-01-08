@@ -17,6 +17,7 @@ class Poll extends React.Component {
       times: [],
       title: '',
       votes: {},
+      closed: true,
     };
     this.submit = this.submit.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -32,6 +33,7 @@ class Poll extends React.Component {
           times: response.data.choices,
           title: response.data.title,
           votes: initVotes,
+          closed: response.data.closed,
         });
       })
       .catch((error) => {
@@ -72,7 +74,7 @@ class Poll extends React.Component {
 
   render() {
     const {
-      times, title,
+      times, title, closed,
     } = this.state;
     const pollID = this.props.match.params.pollID;
     return (
@@ -91,7 +93,7 @@ class Poll extends React.Component {
                 </Fab>
               </Link>
             </div>
-            <PollChoiceItems choices={times} handleOptionChange={this.handleOptionChange} />
+            <PollChoiceItems choices={times} closed={closed} handleOptionChange={this.handleOptionChange} />
             <Row className="vote_container" style={{ width: '100%' }}>
             {/* <TextField
                 value={voterName}
