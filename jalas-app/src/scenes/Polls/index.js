@@ -56,6 +56,7 @@ class Polls extends React.Component {
                   pollID={item.poll_id}
                   pollTiltle={item.title}
                   isCreator={item.creator_id === user}
+                  closed={item.closed}
                   history={this.props.history}
                 />
               </Row>
