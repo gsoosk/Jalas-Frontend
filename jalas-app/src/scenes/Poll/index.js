@@ -108,6 +108,7 @@ class Poll extends React.Component {
                 variant="contained"
                 color="secondary"
                 style={{ margin: '30px' }}
+                disabled={closed}
                 onClick={this.submit}
               >
                     ثبت رای

@@ -34,7 +34,7 @@ class PollItem extends React.Component {
 
   render() {
     const {
-      pollID, pollTiltle, isCreator, history,
+      pollID, pollTiltle, isCreator, history, closed,
     } = this.props;
 
     return (
@@ -71,12 +71,16 @@ class PollItem extends React.Component {
                               ویرایش
                       </Fab>
                     </Link>
-                    <span className="poll-btn" onClick={() => { this.closePoll(); }}>
-                      <Fab variant="extended">
-                        <CancelIcon style={{ margin: '2px' }} />
+                    {
+                      !closed ? (
+                        <span className="poll-btn" onClick={() => { this.closePoll(); }}>
+                          <Fab variant="extended">
+                            <CancelIcon style={{ margin: '2px' }} />
                               بستن نظرسنجی
-                      </Fab>
-                    </span>
+                          </Fab>
+                        </span>
+                      ) : <span />
+                    }
                     <Link to={`/createMeeting/${pollID.toString()}`} className="poll-btn">
                       <Fab variant="extended">
                         <CheckCircleIcon style={{ margin: '2px' }} />
