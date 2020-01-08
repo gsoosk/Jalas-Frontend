@@ -28,20 +28,25 @@ function Index(props) {
                 </h1>
               </Col>
               <Col md={10} className="navbar-bartitle">
-                <Fab
-                  variant="extended"
-                  color="secondary"
-                  className="navbar-button-exit"
-                  onClick={() => {
-                    localStorage.setItem('token', '');
-                    localStorage.setItem('user_id', '');
-                    localStorage.setItem('email', '');
-                    props.history.push('/login');
-                  }}
-                >
-                  <ExitToAppIcon className="navbar-button-icon" />
-                  خروج
-                </Fab>
+                {
+                  localStorage.getItem('token')
+                    ? (
+                      <Fab
+                        variant="extended"
+                        color="secondary"
+                        className="navbar-button-exit"
+                        onClick={() => {
+                          localStorage.setItem('token', '');
+                          localStorage.setItem('user_id', '');
+                          localStorage.setItem('email', '');
+                          props.history.push('/login');
+                        }}
+                      >
+                        <ExitToAppIcon className="navbar-button-icon" />
+                    خروج
+                      </Fab>
+                    ) : <div />
+                }
                 <Link to="/polls">
                   <Fab variant="extended" color="secondary" className="navbar-button">
                     <PollIcon className="navbar-button-icon" />
