@@ -44,7 +44,7 @@ class Poll extends React.Component {
 
   handleOptionChange(choiceId, choiceValue) {
     const newVotes = this.state.votes;
-    newVotes[choiceId] = (choiceValue === 'agree');
+    newVotes[choiceId] = choiceValue;
     this.setState({
       votes: newVotes,
     });
