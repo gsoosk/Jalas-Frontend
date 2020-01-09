@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ReportIcon from '@material-ui/icons/Report';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
 function Index(props) {
   console.log(props);
@@ -57,6 +58,12 @@ function Index(props) {
                   <Fab variant="extended" color="secondary" className="navbar-button">
                     <GroupWorkIcon className="navbar-button-icon" />
                     جلسات
+                  </Fab>
+                </Link>
+                <Link to="/notificationManagement">
+                  <Fab variant="extended" color="secondary" className="navbar-button">
+                    <NotificationsIcon className="navbar-button-icon" />
+                    تنظیم اطلاع رسانی‌ها
                   </Fab>
                 </Link>
                 {localStorage.getItem('email')
