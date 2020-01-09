@@ -61,10 +61,12 @@ function Index(props) {
                 </Link>
                 {localStorage.getItem('email')
                   ? (
+                    <Link to="/profile">
                     <Fab variant="extended" color="secondary" className="navbar-button">
                       <AccountCircleIcon className="navbar-button-icon" />
                       {localStorage.getItem('email')}
                     </Fab>
+                    </Link>
                   )
                   : (
                     <Link to="/login">
