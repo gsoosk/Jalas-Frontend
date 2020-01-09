@@ -13,7 +13,6 @@ import { Link } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ReportIcon from '@material-ui/icons/Report';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 
 function Index(props) {
   console.log(props);
