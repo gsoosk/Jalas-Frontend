@@ -59,8 +59,16 @@ class Poll extends React.Component {
     console.log(vote);
     Axios.post('polls/vote', vote)
       .then((response) => {
-        toast.success(<div>رای شما با موفقیت ثبت شد.</div>);
-        this.props.history.push('/polls');
+        if(response.data.message){
+          toast.success(<div>رای شما با موفقیت بروزرسانی شد.</div>);
+          this.props.history.push('/polls');
+
+        }
+        else{
+          toast.success(<div>رای شما با موفقیت ثبت شد.</div>);
+          this.props.history.push('/polls');
+        }
+        
       })
       .catch((error) => {
         if (error.response) {
