@@ -26,7 +26,6 @@ class NotificationManagement extends React.Component {
       cancel_meeting_notification: true,
     };
     this.submit = this.submit.bind(this);
-    // this.handleOptionChange = this.handleOptionChange.bind(this);
   }
 
   componentDidMount() {
@@ -49,22 +48,19 @@ class NotificationManagement extends React.Component {
       });
   }
 
-  //   handleOptionChange(choiceId, choiceValue) {
-  //     const newVotes = this.state.votes;
-  //     newVotes[choiceId] = choiceValue;
-  //     this.setState({
-  //       votes: newVotes,
-  //     });
-  //   }
 
   submit() {
-    const { votes } = this.state;
-    const vote = {
-      pollID: this.props.match.params.pollID,
-      votes,
+    const newNotifications = {
+        poll_creator_vote_notifications: this.state.poll_creator_vote_notifications,
+        poll_contribution_invitation:this.state.poll_contribution_invitation,
+        mention_notification:this.state.mention_notification,
+        poll_close_notification:this.state.poll_close_notification,
+        meeting_set_creator_notification:this.state.meeting_set_creator_notification,
+        meeting_invitation:this.state.meeting_invitation,
+        cancel_meeting_notification: this.state.cancel_meeting_notification,      
     };
-    console.log(vote);
-    Axios.post('polls/vote', vote)
+    console.log(newNotifications);
+    Axios.post('/meetings/update_notificationsInfo', newNotifications)
       .then((response) => {
         toast.success(<div>تنظیمات شما با موفقیت بروزرسانی شد.</div>);
         this.props.history.push('/polls');
@@ -107,9 +103,19 @@ class NotificationManagement extends React.Component {
             <Row>
               <CardContent>
                     اطلاع رسانی به سازنده رای گیری برای ثبت یا بروزرسانی رای:
-                <RadioGroup aria-label="choice" onChange={(e) => { this.setState({ poll_creator_vote_notifications: e.value }); }} name="customized-radios">
-                  <FormControlLabel value checked={this.state.poll_creator_vote_notifications} control={<StyledRadio />} label="ارسال شود" />
-                  <FormControlLabel value={false} checked={!this.state.poll_creator_vote_notifications} control={<StyledRadio />} label="ارسال نشود" />
+                <RadioGroup aria-label="choice" name="customized-radios">
+                  <FormControlLabel
+                    checked={this.state.poll_creator_vote_notifications} 
+                    control={<StyledRadio />} 
+                    label="ارسال شود" 
+                    onClick={() => { this.setState({ poll_creator_vote_notifications: true }); }}
+                  />
+                  <FormControlLabel 
+                    checked={!this.state.poll_creator_vote_notifications} 
+                    control={<StyledRadio />} 
+                    label="ارسال نشود" 
+                    onClick={() => { this.setState({ poll_creator_vote_notifications: false }); }}
+                  />
                 </RadioGroup>
 
               </CardContent>
@@ -119,14 +125,12 @@ class NotificationManagement extends React.Component {
                     اطلاع رسانی به دعوت برای شرکت در رای گیری :
                 <RadioGroup aria-label="choice" name="customized-radios">
                   <FormControlLabel
-                    value={this.state.poll_contribution_invitation}
                     checked={this.state.poll_contribution_invitation}
                     control={<StyledRadio />}
                     label="ارسال شود"
                     onClick={() => { this.setState({ poll_contribution_invitation: true }); }}
                   />
                   <FormControlLabel
-                    value={!this.state.poll_contribution_invitation}
                     checked={!this.state.poll_contribution_invitation}
                     control={<StyledRadio />}
                     label="ارسال نشود"
@@ -139,9 +143,19 @@ class NotificationManagement extends React.Component {
             <Row>
               <CardContent>
                     اطلاع رسانی مربوط به mention در یک رای گیری :
-                <RadioGroup aria-label="choice" onChange={(e) => { console.log(e.target.value); }} name="customized-radios">
-                  <FormControlLabel value="true" checked={this.state.mention_notification} control={<StyledRadio />} label="ارسال شود" />
-                  <FormControlLabel value="false" checked={!this.state.mention_notification} control={<StyledRadio />} label="ارسال نشود" />
+                <RadioGroup aria-label="choice" name="customized-radios">
+                  <FormControlLabel
+                    checked={this.state.mention_notification} 
+                    control={<StyledRadio />} 
+                    label="ارسال شود" 
+                    onClick={() => { this.setState({ mention_notification: true }); }}
+                  />
+                  <FormControlLabel
+                    checked={!this.state.mention_notification} 
+                    control={<StyledRadio />} 
+                    label="ارسال نشود" 
+                    onClick={() => { this.setState({ mention_notification: false }); }}
+                  />
                 </RadioGroup>
 
               </CardContent>
@@ -149,9 +163,18 @@ class NotificationManagement extends React.Component {
             <Row>
               <CardContent>
                     اطلاع رسانی مربوط به بسته شدن رای گیری :
-                <RadioGroup aria-label="choice" onChange={(e) => { console.log(e.target.value); }} name="customized-radios">
-                  <FormControlLabel value="true" checked={this.state.poll_close_notification} control={<StyledRadio />} label="ارسال شود" />
-                  <FormControlLabel value="false" checked={!this.state.poll_close_notification} control={<StyledRadio />} label="ارسال نشود" />
+                <RadioGroup aria-label="choice" name="customized-radios">
+                  <FormControlLabel checked={this.state.poll_close_notification} 
+                    control={<StyledRadio />} 
+                    label="ارسال شود" 
+                    onClick={() => { this.setState({ poll_close_notification: true }); }}
+                  />
+                  <FormControlLabel
+                    checked={!this.state.poll_close_notification} 
+                    control={<StyledRadio />} 
+                    label="ارسال نشود" 
+                    onClick={() => { this.setState({ poll_close_notification: false }); }}
+                  />
                 </RadioGroup>
 
               </CardContent>
@@ -159,31 +182,56 @@ class NotificationManagement extends React.Component {
             <Row>
               <CardContent>
                     اطلاع رسانی به سازنده رای گیری برای ایجاد شدن جلسه یک رای گیری :
-                <RadioGroup aria-label="choice" onChange={(e) => { console.log(e.target.value); }} name="customized-radios">
-                  <FormControlLabel value="true" checked={this.state.meeting_set_creator_notification} control={<StyledRadio />} label="ارسال شود" />
-                  <FormControlLabel value="false" checked={!this.state.meeting_set_creator_notification} control={<StyledRadio />} label="ارسال نشود" />
+                <RadioGroup aria-label="choice" name="customized-radios">
+                  <FormControlLabel checked={this.state.meeting_set_creator_notification} 
+                    control={<StyledRadio />} 
+                    label="ارسال شود" 
+                    onClick={() => { this.setState({ meeting_set_creator_notification: true }); }}
+                  />
+                  <FormControlLabel
+                    checked={!this.state.meeting_set_creator_notification} 
+                    control={<StyledRadio />} 
+                    label="ارسال نشود" 
+                    onClick={() => { this.setState({ meeting_set_creator_notification: false }); }}
+                  />
                 </RadioGroup>
-
               </CardContent>
             </Row>
             <Row>
               <CardContent>
                     اطلاع رسانی مربوط به دعوت برای شرکت در جلسه :
-                <RadioGroup aria-label="choice" onChange={(e) => { console.log(e.target.value); }} name="customized-radios">
-                  <FormControlLabel value="true" checked={this.state.meeting_invitation} control={<StyledRadio />} label="ارسال شود" />
-                  <FormControlLabel value="false" checked={!this.state.meeting_invitation} control={<StyledRadio />} label="ارسال نشود" />
+                <RadioGroup aria-label="choice" name="customized-radios">
+                  <FormControlLabel checked={this.state.meeting_invitation} 
+                    control={<StyledRadio />} 
+                    label="ارسال شود" 
+                    onClick={() => { this.setState({ meeting_invitation: true }); }}
+                />
+               <FormControlLabel
+                    checked={!this.state.meeting_invitation} 
+                    control={<StyledRadio />} 
+                    label="ارسال نشود" 
+                    onClick={() => { this.setState({ meeting_invitation: false }); }}
+                  />
                 </RadioGroup>
-
               </CardContent>
             </Row>
+
             <Row>
               <CardContent>
                     اطلاع رسانی مربوط به کنسل شدن یک جلسه :
-                <RadioGroup aria-label="choice" onChange={(e) => { console.log(e.target.value); }} name="customized-radios">
-                  <FormControlLabel value="true" checked={this.state.cancel_meeting_notification} control={<StyledRadio />} label="ارسال شود" />
-                  <FormControlLabel value="false" checked={!this.state.cancel_meeting_notification} control={<StyledRadio />} label="ارسال نشود" />
+                <RadioGroup aria-label="choice" name="customized-radios">
+                  <FormControlLabel checked={this.state.cancel_meeting_notification} 
+                    control={<StyledRadio />} 
+                    label="ارسال شود" 
+                    onClick={() => { this.setState({ cancel_meeting_notification: true }); }}
+                  />
+                  <FormControlLabel
+                    checked={!this.state.cancel_meeting_notification} 
+                    control={<StyledRadio />} 
+                    label="ارسال نشود" 
+                    onClick={() => { this.setState({ cancel_meeting_notification: false }); }}
+                  />
                 </RadioGroup>
-
               </CardContent>
             </Row>
             <Row className="vote_container" style={{ width: '100%' }}>
