@@ -12,7 +12,7 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { Link } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-
+import ReportIcon from '@material-ui/icons/Report';
 
 function Index(props) {
   console.log(props);
@@ -28,20 +28,25 @@ function Index(props) {
                 </h1>
               </Col>
               <Col md={10} className="navbar-bartitle">
-                <Fab
-                  variant="extended"
-                  color="secondary"
-                  className="navbar-button-exit"
-                  onClick={() => {
-                    localStorage.setItem('token', '');
-                    localStorage.setItem('user_id', '');
-                    localStorage.setItem('email', '');
-                    props.history.push('/login');
-                  }}
-                >
-                  <ExitToAppIcon className="navbar-button-icon" />
-                  خروج
-                </Fab>
+                {
+                  localStorage.getItem('token')
+                    ? (
+                      <Fab
+                        variant="extended"
+                        color="secondary"
+                        className="navbar-button-exit"
+                        onClick={() => {
+                          localStorage.setItem('token', '');
+                          localStorage.setItem('user_id', '');
+                          localStorage.setItem('email', '');
+                          props.history.push('/login');
+                        }}
+                      >
+                        <ExitToAppIcon className="navbar-button-icon" />
+                    خروج
+                      </Fab>
+                    ) : <div />
+                }
                 <Link to="/polls">
                   <Fab variant="extended" color="secondary" className="navbar-button">
                     <PollIcon className="navbar-button-icon" />
@@ -56,10 +61,12 @@ function Index(props) {
                 </Link>
                 {localStorage.getItem('email')
                   ? (
+                    <Link to="/profile">
                     <Fab variant="extended" color="secondary" className="navbar-button">
                       <AccountCircleIcon className="navbar-button-icon" />
                       {localStorage.getItem('email')}
                     </Fab>
+                    </Link>
                   )
                   : (
                     <Link to="/login">
@@ -69,6 +76,17 @@ function Index(props) {
                       </Fab>
                     </Link>
                   )}
+                {localStorage.getItem('is_admin') === 'true' && localStorage.getItem('email')
+                  ? (
+                    <Link to="/reports">
+                      <Fab variant="extended" color="secondary" className="navbar-button">
+                        <ReportIcon className="navbar-button-icon" />
+                      گزارش‌ها
+                      </Fab>
+                    </Link>
+                  )
+                  : <div />
+                }
 
               </Col>
             </Row>

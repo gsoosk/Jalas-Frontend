@@ -17,6 +17,7 @@ class Poll extends React.Component {
       times: [],
       title: '',
       votes: {},
+      closed: true,
     };
     this.submit = this.submit.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -32,16 +33,18 @@ class Poll extends React.Component {
           times: response.data.choices,
           title: response.data.title,
           votes: initVotes,
+          closed: response.data.closed,
         });
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(<div>{error.response.data.message}</div>);
+        this.props.history.push('/');
       });
   }
 
   handleOptionChange(choiceId, choiceValue) {
     const newVotes = this.state.votes;
-    newVotes[choiceId] = (choiceValue === 'agree');
+    newVotes[choiceId] = choiceValue;
     this.setState({
       votes: newVotes,
     });
@@ -56,8 +59,16 @@ class Poll extends React.Component {
     console.log(vote);
     Axios.post('polls/vote', vote)
       .then((response) => {
-        toast.success(<div>رای شما با موفقیت ثبت شد.</div>);
-        this.props.history.push('/polls');
+        if(response.data.message){
+          toast.success(<div>رای شما با موفقیت بروزرسانی شد.</div>);
+          this.props.history.push('/polls');
+
+        }
+        else{
+          toast.success(<div>رای شما با موفقیت ثبت شد.</div>);
+          this.props.history.push('/polls');
+        }
+        
       })
       .catch((error) => {
         if (error.response) {
@@ -71,7 +82,7 @@ class Poll extends React.Component {
 
   render() {
     const {
-      times, title,
+      times, title, closed,
     } = this.state;
     const pollID = this.props.match.params.pollID;
     return (
@@ -90,7 +101,7 @@ class Poll extends React.Component {
                 </Fab>
               </Link>
             </div>
-            <PollChoiceItems choices={times} handleOptionChange={this.handleOptionChange} />
+            <PollChoiceItems choices={times} closed={closed} handleOptionChange={this.handleOptionChange} />
             <Row className="vote_container" style={{ width: '100%' }}>
             {/* <TextField
                 value={voterName}
@@ -105,6 +116,7 @@ class Poll extends React.Component {
                 variant="contained"
                 color="secondary"
                 style={{ margin: '30px' }}
+                disabled={closed}
                 onClick={this.submit}
               >
                     ثبت رای

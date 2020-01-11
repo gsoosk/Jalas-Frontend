@@ -5,6 +5,9 @@ import {
 } from '@material-ui/core';
 import './styles.scss';
 import { toast } from 'react-toastify';
+import { DateTimePicker } from '@material-ui/pickers';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AddPollTime from './components/AddPollTime';
 import AddParticipants from './components/AddParticipants';
 import Axios from '../../services/axios';
@@ -16,9 +19,11 @@ class CreatePoll extends React.Component {
       times: [],
       start: new Date(),
       end: new Date(),
+      deadline: new Date(),
       participants: [],
       email: '',
       title: '',
+      hasDeadline: false,
     };
     this.state = { ...this.initState, componentState: '' };
     this.addTime = this.addTime.bind(this);
@@ -136,12 +141,14 @@ class CreatePoll extends React.Component {
 
   submit() {
     const {
-      title, times, participants, componentState,
+      title, times, participants, componentState, deadline, hasDeadline,
     } = this.state;
     const poll = {
       title,
       choices: times,
       participants,
+      deadline,
+      hasDeadline,
     };
     if (componentState === 'create') this.createPoll(poll);
     else this.updatePoll(poll);
@@ -149,7 +156,7 @@ class CreatePoll extends React.Component {
 
   render() {
     const {
-      times, start, end, participants, email, title, componentState,
+      times, start, end, participants, email, title, componentState, deadline, hasDeadline,
     } = this.state;
     return (
       <Container>
@@ -193,6 +200,28 @@ class CreatePoll extends React.Component {
                     onAdd={this.addParticipant}
                   />
                 </Row>
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={hasDeadline} onChange={() => { this.setState({ hasDeadline: !hasDeadline }); }} value="antoine" />
+                    }
+                  label="می‌خواهم یک ددلاین ثبت کنم."
+                />
+                {
+                  hasDeadline ? (
+                    <Row>
+                      <DateTimePicker
+                        autoOk
+                        ampm={false}
+                        disablePast
+                        value={deadline}
+                        label="تاریخ بسته شدن"
+                        style={{ width: '100%', margin: '10px' }}
+                        onChange={(newDate) => { this.setState({ deadline: newDate }); }}
+                      />
+                    </Row>
+                  ) : <Row />
+                }
+
                 <Row className="create_poll_form_container" style={{ width: '100%' }}>
                   <Button
                     variant="contained"
