@@ -200,25 +200,31 @@ class CreatePoll extends React.Component {
                     onAdd={this.addParticipant}
                   />
                 </Row>
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={hasDeadline} onChange={() => { this.setState({ hasDeadline: !hasDeadline }); }} value="antoine" />
-                    }
-                  label="می‌خواهم یک ددلاین ثبت کنم."
-                />
-                {
-                  hasDeadline ? (
-                    <Row>
-                      <DateTimePicker
-                        autoOk
-                        ampm={false}
-                        disablePast
-                        value={deadline}
-                        label="تاریخ بسته شدن"
-                        style={{ width: '100%', margin: '10px' }}
-                        onChange={(newDate) => { this.setState({ deadline: newDate }); }}
+                { componentState === 'create'
+                  ? (
+                    <div>
+                      <FormControlLabel
+                        control={
+                          <Checkbox checked={hasDeadline} onChange={() => { this.setState({ hasDeadline: !hasDeadline }); }} value="antoine" />
+                        }
+                        label="می‌خواهم یک ددلاین ثبت کنم."
                       />
-                    </Row>
+                      {
+                      hasDeadline ? (
+                        <Row>
+                          <DateTimePicker
+                            autoOk
+                            ampm={false}
+                            disablePast
+                            value={deadline}
+                            label="تاریخ بسته شدن"
+                            style={{ width: '100%', margin: '10px' }}
+                            onChange={(newDate) => { this.setState({ deadline: newDate }); }}
+                          />
+                        </Row>
+                      ) : <Row />
+                    }
+                    </div>
                   ) : <Row />
                 }
 
