@@ -3,53 +3,50 @@ import { Container, Col } from 'react-bootstrap';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Row from 'react-bootstrap/Row';
-import { TextField, Typography } from '@material-ui/core';
+import {
+  TextField, Typography, Checkbox,
+} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
 import Axios from '../../services/axios';
 
 
-class Login extends React.Component {
+class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
       password: '',
+      confirmPassword: '',
+      isAdmin: true,
     };
     this.submit = this.submit.bind(this);
   }
 
   submit() {
-    const { email, password } = this.state;
-    const loginData = {
+    const { email, password, isAdmin } = this.state;
+    const signupData = {
       username: email,
       password,
+      is_staff: isAdmin,
     };
-    Axios.post('meetings/auth/', loginData)
+    console.log(signupData)
+    Axios.post('meetings/signup/', signupData)
       .then((response) => {
-        toast.success(<div>ورود با موفقیت انجام شد.</div>);
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user_id', response.data.user_id);
-        localStorage.setItem('email', response.data.email);
-        localStorage.setItem('is_admin', response.data.is_admin);
-        this.setState({
-          email: '',
-          password: '',
-        });
-        this.props.history.push('/polls');
+        toast.success(<div>ثبت‌نام با موفقیت انجام شد.</div>);
+        this.props.history.push('/login');
       })
       .catch((error) => {
-        if (error.response.status === 400) {
-          toast.error(<div>رمز عبور یا ایمیل اشتباه است. لطفا دوباره تلاش کنید.</div>);
-        } else {
+        if (error.response) {
           toast.error(<div>{JSON.stringify(error.response.data)}</div>);
         }
       });
   }
 
   render() {
-    const { email, password } = this.state;
+    const {
+      email, password, confirmPassword, isAdmin,
+    } = this.state;
     return (
       <Container>
         <Row>
@@ -60,7 +57,7 @@ class Login extends React.Component {
                 <Container>
                   <Row style={{ width: '100%' }}>
                     <Typography variant="h5" align="center" style={{ width: '100%' }}>
-                  برای ورود ایمیل و رمز عبور خود را وارد کنید
+                      برای ایجاد یک حساب کاربری اطلاعات خود را وارد کنید.
                     </Typography>
                   </Row>
                   <Row style={{ width: '100%', justifyContent: 'center' }}>
@@ -79,28 +76,43 @@ class Login extends React.Component {
                       style={{ margin: '10px', width: '250px' }}
                       type="password"
                     />
+                    <TextField
+                      value={confirmPassword}
+                      label="تکرار رمز عبور"
+                      onChange={(event) => {
+                        this.setState({ confirmPassword: event.target.value });
+                      }}
+                      style={{ margin: '10px', width: '250px' }}
+                      type="password"
+                    />
+                  </Row>
+                  <Row>
+                    <Col md={12}>
+                      <Typography variant="body2" style={{ margin: '10px' }}>
+                        <Checkbox
+                          onChange={() => { this.setState({ isAdmin: !isAdmin }); }}
+                          value={isAdmin}
+                          checked={isAdmin}
+                        />
+                        می‌خواهم به عنوان ادمین فعالیت کنم.
+                      </Typography>
+                    </Col>
                   </Row>
                   <Row style={{ width: '100%', justifyContent: 'center' }}>
                     <Button
                       variant="contained"
                       color="secondary"
                       style={{ margin: '10px' }}
-                      disabled={!(email && password && /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email))}
+                      disabled={!(password === confirmPassword && email && password && /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email))}
                       onClick={this.submit}
                     >
-                     ورود
+                      ثبت‌نام
                     </Button>
                   </Row>
                   <Row style={{ width: '100%', justifyContent: 'center' }}>
-                    <Link to="/signup">
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        style={{ margin: '10px' }}
-                      >
-                      حساب کاربری ندارم!
-                      </Button>
-                    </Link>
+                    <Typography align="center" variant="caption">
+                     پ.ن : ایمیل‌تون رو واقعی وارد کنید ;)
+                    </Typography>
                   </Row>
                 </Container>
               </CardContent>
@@ -114,4 +126,4 @@ class Login extends React.Component {
 }
 
 
-export default Login;
+export default Signup;

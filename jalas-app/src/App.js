@@ -23,6 +23,7 @@ import Meetings from './scenes/Meetings';
 import Comments from './scenes/Comments';
 import NotificationManagement from './scenes/NotificationManagement';
 import Profile from "./scenes/Profile";
+import Signup from "./scenes/Signup";
 
 const store = createStore(JalasApp, applyMiddleware(thunk));
 
@@ -49,6 +50,7 @@ function App() {
                 <Route path="/comments/:pollID" component={Comments} />
                 <Route path="/notificationManagement" component={NotificationManagement} />
                 <Route path="/profile" component={Profile} />
+                <Route path="/signup" component={Signup} />
               </div>
             </div>
           </MuiThemeProvider>
